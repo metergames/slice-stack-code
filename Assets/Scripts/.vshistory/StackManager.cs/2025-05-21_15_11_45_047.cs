@@ -11,7 +11,6 @@ public class StackManager : MonoBehaviour
     public float cameraFollowSpeed = 5f;
     public float cameraYOffset = 1f;
     public float spawnHeightOffset = 1f;
-    public float perfectStackThreshold = 0.1f;
 
     private GameObject lastBlock;
     private BlockMover.Axis currentAxis = BlockMover.Axis.X;
@@ -69,50 +68,12 @@ public class StackManager : MonoBehaviour
         Transform currentBlock = lastBlock.transform;
         Transform previousBlock = stackBlocks[stackBlocks.Count - 2].transform;
 
-        BlockMover.Axis sliceAxis = currentAxis == BlockMover.Axis.X ? BlockMover.Axis.Z : BlockMover.Axis.X;
+        float currentHeight = currentBlock.localScale.y;
+        float previousHeight = previousBlock.localScale.y;
 
-        float delta = sliceAxis == BlockMover.Axis.X ? currentBlock.position.x - previousBlock.position.x : currentBlock.position.z - previousBlock.position.z;
-        float overlap = sliceAxis == BlockMover.Axis.X ? previousBlock.localScale.x - Mathf.Abs(delta) : previousBlock.localScale.z - Mathf.Abs(delta);
+        float targetY = previousBlock.position.y + (previousHeight / 2f) + (currentHeight / 2f);
 
-        // Didn't land anywhere, game over
-        if (overlap <= 0f)
-        {
-            Rigidbody rbLoss = currentBlock.gameObject.AddComponent<Rigidbody>();
-            rbLoss.mass = 0.5f;
-            rbLoss.angularVelocity = Random.insideUnitSphere * 5f;
-
-            gameOver = true;
-            return;
-        }
-
-        // Perfect stack forgiveness
-        if (Mathf.Abs(delta) <= perfectStackThreshold)
-        {
-            // Snap to perfect alignment
-            Vector3 perfectPos = previousBlock.position;
-            perfectPos.y = currentBlock.position.y;
-            currentBlock.position = perfectPos;
-
-            float currentHeight = currentBlock.localScale.y;
-            float previousHeight = previousBlock.localScale.y;
-            float targetY = previousBlock.position.y + (previousHeight / 2f) + (currentHeight / 2f);
-
-            DropBlock(currentBlock, targetY, () =>
-            {
-                stackBlocks.Add(currentBlock.gameObject);
-                SpawnNextBlock();
-            });
-
-            MoveCamera();
-            return;
-        }
-
-        float currHeight = currentBlock.localScale.y;
-        float prevHeight = previousBlock.localScale.y;
-
-        float finalY = previousBlock.position.y + (prevHeight / 2f) + (currHeight / 2f);
-
-        DropBlock(currentBlock, finalY, () =>
+        DropBlock(currentBlock, targetY, () =>
         {
             SliceBlock(currentBlock.gameObject, previousBlock.gameObject, currentAxis == BlockMover.Axis.X ? BlockMover.Axis.Z : BlockMover.Axis.X);
 
@@ -120,11 +81,6 @@ public class StackManager : MonoBehaviour
             SpawnNextBlock();
         });
 
-        MoveCamera();
-    }
-
-    private void MoveCamera()
-    {
         // Move Camera
         float newTargetY = lastBlock.transform.position.y + cameraYOffset;
 
@@ -160,6 +116,12 @@ public class StackManager : MonoBehaviour
         float overlap = axis == BlockMover.Axis.X
             ? prevScale.x - Mathf.Abs(delta)
             : prevScale.z - Mathf.Abs(delta);
+
+        if (overlap <= 0f)
+        {
+            Rigidbody rbLoss = current.AddComponent<Rigidbody>();
+            return;
+        }
 
         // Resize current block
         if (axis == BlockMover.Axis.X)

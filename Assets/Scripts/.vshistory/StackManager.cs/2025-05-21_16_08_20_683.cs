@@ -107,12 +107,12 @@ public class StackManager : MonoBehaviour
             return;
         }
 
-        float currHeight = currentBlock.localScale.y;
-        float prevHeight = previousBlock.localScale.y;
+        float currentHeight = currentBlock.localScale.y;
+        float previousHeight = previousBlock.localScale.y;
 
-        float finalY = previousBlock.position.y + (prevHeight / 2f) + (currHeight / 2f);
+        float targetY = previousBlock.position.y + (previousHeight / 2f) + (currentHeight / 2f);
 
-        DropBlock(currentBlock, finalY, () =>
+        DropBlock(currentBlock, targetY, () =>
         {
             SliceBlock(currentBlock.gameObject, previousBlock.gameObject, currentAxis == BlockMover.Axis.X ? BlockMover.Axis.Z : BlockMover.Axis.X);
 
@@ -120,11 +120,6 @@ public class StackManager : MonoBehaviour
             SpawnNextBlock();
         });
 
-        MoveCamera();
-    }
-
-    private void MoveCamera()
-    {
         // Move Camera
         float newTargetY = lastBlock.transform.position.y + cameraYOffset;
 
