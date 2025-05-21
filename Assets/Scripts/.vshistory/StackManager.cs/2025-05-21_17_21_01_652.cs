@@ -205,27 +205,23 @@ public class StackManager : MonoBehaviour
 
     private void TriggerGameOverEffects()
     {
-        if (cameraFollowTarget == null || cineCam == null) return;
+        if (cameraFollowTarget == null) return;
 
+        // Kill any existing camera tweens
         DOTween.Kill(cameraFollowTarget);
 
         Vector3 camPos = cameraFollowTarget.position;
-        Vector3 zoomOutTargetPos = camPos + new Vector3(0f, -3f, 0f); // just move down
+        Vector3 zoomOutPos = camPos + new Vector3(0f, -3f, -3f); // down and slightly back
 
-        // Animate follow target position
-        cameraFollowTarget.DOMove(zoomOutTargetPos, 1f).SetEase(Ease.OutSine);
+        // Zoom out/down smoothly
+        cameraFollowTarget.DOMove(zoomOutPos, 1f).SetEase(Ease.OutSine).OnComplete(() =>
+        {
+            // Start slow left-right sway
+            Vector3 swayTarget = zoomOutPos + new Vector3(1f, 0f, 0f); // 1 unit right
 
-        // Animate zoom out via FOV (orthographic camera)
-        float originalSize = cineCam.Lens.OrthographicSize;
-        float targetSize = originalSize + 3f;
-
-        DOTween.To(() => cineCam.Lens.OrthographicSize, x => cineCam.Lens.OrthographicSize = x, targetSize, 1f)
-            .SetEase(Ease.OutSine);
-
-        // Optional: camera sway after zoom-out
-        Vector3 swayTarget = zoomOutTargetPos + new Vector3(1f, 0f, 0f);
-        cameraFollowTarget.DOMove(swayTarget, 8f)
-            .SetEase(Ease.InOutSine)
-            .SetLoops(-1, LoopType.Yoyo);
+            cameraFollowTarget.DOMove(swayTarget, 3f)
+                .SetEase(Ease.InOutSine)
+                .SetLoops(-1, LoopType.Yoyo);
+        });
     }
 }

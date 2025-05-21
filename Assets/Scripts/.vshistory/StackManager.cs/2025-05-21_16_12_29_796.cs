@@ -1,6 +1,5 @@
-﻿using DG.Tweening;
 using System.Collections.Generic;
-using Unity.Cinemachine;
+using DG.Tweening;
 using UnityEngine;
 
 public class StackManager : MonoBehaviour
@@ -13,7 +12,6 @@ public class StackManager : MonoBehaviour
     public float cameraYOffset = 1f;
     public float spawnHeightOffset = 1f;
     public float perfectStackThreshold = 0.1f;
-    public CinemachineCamera cineCam;
 
     private GameObject lastBlock;
     private BlockMover.Axis currentAxis = BlockMover.Axis.X;
@@ -84,8 +82,6 @@ public class StackManager : MonoBehaviour
             rbLoss.angularVelocity = Random.insideUnitSphere * 5f;
 
             gameOver = true;
-
-            TriggerGameOverEffects();
             return;
         }
 
@@ -201,31 +197,5 @@ public class StackManager : MonoBehaviour
         rb.mass = 0.5f;
         rb.angularVelocity = Random.insideUnitSphere * 5f;
         Destroy(fallingBlock, 2f); // Auto-cleanup
-    }
-
-    private void TriggerGameOverEffects()
-    {
-        if (cameraFollowTarget == null || cineCam == null) return;
-
-        DOTween.Kill(cameraFollowTarget);
-
-        Vector3 camPos = cameraFollowTarget.position;
-        Vector3 zoomOutTargetPos = camPos + new Vector3(0f, -3f, 0f); // just move down
-
-        // Animate follow target position
-        cameraFollowTarget.DOMove(zoomOutTargetPos, 1f).SetEase(Ease.OutSine);
-
-        // Animate zoom out via FOV (orthographic camera)
-        float originalSize = cineCam.Lens.OrthographicSize;
-        float targetSize = originalSize + 3f;
-
-        DOTween.To(() => cineCam.Lens.OrthographicSize, x => cineCam.Lens.OrthographicSize = x, targetSize, 1f)
-            .SetEase(Ease.OutSine);
-
-        // Optional: camera sway after zoom-out
-        Vector3 swayTarget = zoomOutTargetPos + new Vector3(1f, 0f, 0f);
-        cameraFollowTarget.DOMove(swayTarget, 8f)
-            .SetEase(Ease.InOutSine)
-            .SetLoops(-1, LoopType.Yoyo);
     }
 }

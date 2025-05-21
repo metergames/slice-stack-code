@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using System.Collections.Generic;
-using Unity.Cinemachine;
 using UnityEngine;
 
 public class StackManager : MonoBehaviour
@@ -13,7 +12,6 @@ public class StackManager : MonoBehaviour
     public float cameraYOffset = 1f;
     public float spawnHeightOffset = 1f;
     public float perfectStackThreshold = 0.1f;
-    public CinemachineCamera cineCam;
 
     private GameObject lastBlock;
     private BlockMover.Axis currentAxis = BlockMover.Axis.X;
@@ -205,27 +203,21 @@ public class StackManager : MonoBehaviour
 
     private void TriggerGameOverEffects()
     {
-        if (cameraFollowTarget == null || cineCam == null) return;
+        cameraFollowTarget.transform.position = new Vector3(0, 15, 0);
+        // Move follow target to new zoomed-out position
+        DOTween.Kill(cameraFollowTarget); // Kill any in-progress tweens
 
-        DOTween.Kill(cameraFollowTarget);
-
-        Vector3 camPos = cameraFollowTarget.position;
-        Vector3 zoomOutTargetPos = camPos + new Vector3(0f, -3f, 0f); // just move down
-
-        // Animate follow target position
-        cameraFollowTarget.DOMove(zoomOutTargetPos, 1f).SetEase(Ease.OutSine);
-
-        // Animate zoom out via FOV (orthographic camera)
-        float originalSize = cineCam.Lens.OrthographicSize;
-        float targetSize = originalSize + 3f;
-
-        DOTween.To(() => cineCam.Lens.OrthographicSize, x => cineCam.Lens.OrthographicSize = x, targetSize, 1f)
-            .SetEase(Ease.OutSine);
-
-        // Optional: camera sway after zoom-out
-        Vector3 swayTarget = zoomOutTargetPos + new Vector3(1f, 0f, 0f);
-        cameraFollowTarget.DOMove(swayTarget, 8f)
+        cameraFollowTarget.DOMove(cameraGameOverTarget.position, gameOverZoomDuration)
             .SetEase(Ease.InOutSine)
-            .SetLoops(-1, LoopType.Yoyo);
+            .OnComplete(() =>
+            {
+                // Start slow left ↔ right panning loop after zoom
+                Vector3 left = cameraGameOverTarget.position + Vector3.left * panDistance;
+                Vector3 right = cameraGameOverTarget.position + Vector3.right * panDistance;
+
+                cameraFollowTarget.DOMoveX(left.x, panDuration)
+                    .SetEase(Ease.InOutSine)
+                    .SetLoops(-1, LoopType.Yoyo);
+            });
     }
 }
