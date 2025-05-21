@@ -5,12 +5,8 @@ using UnityEngine;
 public class StackManager : MonoBehaviour
 {
     public GameObject blockPrefab;
-    //public float blockHeight = 2f;
+    public float blockHeight = 1.5f;
     public Transform startPosition;
-    public Transform cameraFollowTarget;
-    public float cameraFollowSpeed = 5f;
-    public float cameraYOffset = 1f;
-    public float spawnHeightOffset = 1f;
 
     private GameObject lastBlock;
     private BlockMover.Axis currentAxis = BlockMover.Axis.X;
@@ -38,8 +34,7 @@ public class StackManager : MonoBehaviour
 
     private void SpawnNextBlock()
     {
-        float blockY = lastBlock.transform.localScale.y;
-        Vector3 spawnPos = lastBlock.transform.position + Vector3.up * (blockY + spawnHeightOffset);
+        Vector3 spawnPos = lastBlock.transform.position + Vector3.up * blockHeight;
         Vector3 spawnScale = lastBlock.transform.localScale;
 
         GameObject newBlock = Instantiate(blockPrefab, spawnPos, Quaternion.identity);
@@ -64,28 +59,13 @@ public class StackManager : MonoBehaviour
         Transform currentBlock = lastBlock.transform;
         Transform previousBlock = stackBlocks[stackBlocks.Count - 2].transform;
 
-        float currentHeight = currentBlock.localScale.y;
-        float previousHeight = previousBlock.localScale.y;
-
-        float targetY = previousBlock.position.y + (previousHeight / 2f) + (currentHeight / 2f);
-
-        DropBlock(currentBlock, targetY, () =>
+        DropBlock(currentBlock, previousBlock.position.y + blockHeight / 2f, () =>
         {
             SliceBlock(currentBlock.gameObject, previousBlock.gameObject, currentAxis == BlockMover.Axis.X ? BlockMover.Axis.Z : BlockMover.Axis.X);
 
             //stackBlocks.Add(currentBlock.gameObject);
             SpawnNextBlock();
         });
-
-        // Move Camera
-        float newTargetY = lastBlock.transform.position.y + cameraYOffset;
-
-        Vector3 currentFollowPos = cameraFollowTarget.position;
-        Vector3 newFollowPos = new Vector3(currentFollowPos.x, newTargetY, currentFollowPos.z);
-
-        // Smooth move
-        DOTween.Kill(cameraFollowTarget); // In case one already exists
-        cameraFollowTarget.DOMoveY(newTargetY, 0.3f).SetEase(Ease.OutSine);
     }
 
     private void DropBlock(Transform block, float targetY, System.Action onComplete)

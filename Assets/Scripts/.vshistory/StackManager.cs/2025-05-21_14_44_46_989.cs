@@ -10,7 +10,6 @@ public class StackManager : MonoBehaviour
     public Transform cameraFollowTarget;
     public float cameraFollowSpeed = 5f;
     public float cameraYOffset = 1f;
-    public float spawnHeightOffset = 1f;
 
     private GameObject lastBlock;
     private BlockMover.Axis currentAxis = BlockMover.Axis.X;
@@ -39,7 +38,7 @@ public class StackManager : MonoBehaviour
     private void SpawnNextBlock()
     {
         float blockY = lastBlock.transform.localScale.y;
-        Vector3 spawnPos = lastBlock.transform.position + Vector3.up * (blockY + spawnHeightOffset);
+        Vector3 spawnPos = lastBlock.transform.position + Vector3.up * blockY;
         Vector3 spawnScale = lastBlock.transform.localScale;
 
         GameObject newBlock = Instantiate(blockPrefab, spawnPos, Quaternion.identity);
