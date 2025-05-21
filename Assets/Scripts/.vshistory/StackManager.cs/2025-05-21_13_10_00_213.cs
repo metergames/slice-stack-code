@@ -5,7 +5,7 @@ using UnityEngine;
 public class StackManager : MonoBehaviour
 {
     public GameObject blockPrefab;
-    public float blockHeight = 1.5f;
+    public float blockHeight = 2f;
     public Transform startPosition;
 
     private GameObject lastBlock;

@@ -5,7 +5,7 @@ using UnityEngine;
 public class StackManager : MonoBehaviour
 {
     public GameObject blockPrefab;
-    public float blockHeight = 1.5f;
+    public float blockHeight = 2f;
     public Transform startPosition;
 
     private GameObject lastBlock;
@@ -35,12 +35,10 @@ public class StackManager : MonoBehaviour
     private void SpawnNextBlock()
     {
         Vector3 spawnPos = lastBlock.transform.position + Vector3.up * blockHeight;
-        Vector3 spawnScale = lastBlock.transform.localScale;
 
         GameObject newBlock = Instantiate(blockPrefab, spawnPos, Quaternion.identity);
-        newBlock.transform.localScale = spawnScale;
-
         BlockMover mover = newBlock.GetComponent<BlockMover>();
+
         mover.moveAxis = currentAxis;
         mover.StartMovement();
 
