@@ -13,7 +13,7 @@ public class BlockMover : MonoBehaviour
 
     private void Start()
     {
-        //StartMovement();
+        StartMovement();
     }
 
     public void StartMovement()

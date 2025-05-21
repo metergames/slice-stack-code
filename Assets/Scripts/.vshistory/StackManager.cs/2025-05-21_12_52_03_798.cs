@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -10,7 +9,6 @@ public class StackManager : MonoBehaviour
 
     private GameObject lastBlock;
     private BlockMover.Axis currentAxis = BlockMover.Axis.X;
-    private List<GameObject> stackBlocks = new List<GameObject>();
 
     private void Start()
     {
@@ -29,7 +27,6 @@ public class StackManager : MonoBehaviour
         lastBlock = Instantiate(blockPrefab, startPosition.position, Quaternion.identity);
         lastBlock.name = "BaseBlock";
         lastBlock.GetComponent<BlockMover>().enabled = false;
-        stackBlocks.Add(lastBlock);
     }
 
     private void SpawnNextBlock()
@@ -45,30 +42,24 @@ public class StackManager : MonoBehaviour
         lastBlock = newBlock;
 
         currentAxis = currentAxis == BlockMover.Axis.X ? BlockMover.Axis.Z : BlockMover.Axis.X; // Alternate the axis
-
-        stackBlocks.Add(lastBlock);
     }
 
     private void PlaceBlock()
     {
         BlockMover mover = lastBlock.GetComponent<BlockMover>();
         mover.StopMovement();
-
-        Transform currentBlock = lastBlock.transform;
-        Transform previousBlock = stackBlocks[stackBlocks.Count - 2].transform;
-
-        DropBlock(currentBlock, previousBlock.position.y + blockHeight / 2f, () =>
+        DropBlock(lastBlock.transform, () =>
         {
-            stackBlocks.Add(currentBlock.gameObject);
+            // Slice logic
             SpawnNextBlock();
         });
     }
 
-    private void DropBlock(Transform block, float targetY, System.Action onComplete)
+    private void DropBlock(Transform block, System.Action onComplete)
     {
-        //Vector3 targetPosition = block.position;
-        //targetPosition.y = lastBlock.transform.position.y + (blockHeight / 2f);
+        Vector3 targetPosition = block.position;
+        targetPosition.y = lastBlock.transform.position.y + (blockHeight / 2f);
 
-        block.DOMoveY(targetY, 0.3f).SetEase(Ease.OutBounce).OnComplete(() => onComplete?.Invoke());
+        block.DOMoveY(targetPosition.y, 0.2f).SetEase(Ease.OutBounce).OnComplete(() => onComplete?.Invoke());
     }
 }

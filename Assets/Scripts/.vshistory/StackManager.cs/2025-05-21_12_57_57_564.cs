@@ -69,6 +69,6 @@ public class StackManager : MonoBehaviour
         //Vector3 targetPosition = block.position;
         //targetPosition.y = lastBlock.transform.position.y + (blockHeight / 2f);
 
-        block.DOMoveY(targetY, 0.3f).SetEase(Ease.OutBounce).OnComplete(() => onComplete?.Invoke());
+        block.DOMoveY(targetY, 0.2f).SetEase(Ease.OutBounce).OnComplete(() => onComplete?.Invoke());
     }
 }
