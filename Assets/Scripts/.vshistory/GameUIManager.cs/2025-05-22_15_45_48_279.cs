@@ -13,7 +13,6 @@ public class GameUIManager : MonoBehaviour
     [Header("UI Groups")]
     public CanvasGroup fadePanelGroup;
     public CanvasGroup resetButtonGroup;
-    public CanvasGroup gameOverTextGroup;
 
     private int topScore = 0;
 
@@ -128,16 +127,4 @@ public class GameUIManager : MonoBehaviour
         //resetButtonGroup.DOFade(0f, 0.3f).SetEase(Ease.InQuad);
     }
 
-    public void ShowGameOverText()
-    {
-        gameOverTextGroup.alpha = 0f;
-        gameOverTextGroup.gameObject.SetActive(true);
-        gameOverTextGroup.DOFade(1f, 0.6f).SetEase(Ease.OutQuad);
-    }
-
-    public void HideGameOverText()
-    {
-        gameOverTextGroup.alpha = 0f;
-        gameOverTextGroup.gameObject.SetActive(false);
-    }
 }

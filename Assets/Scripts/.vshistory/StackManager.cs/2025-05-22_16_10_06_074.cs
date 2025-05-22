@@ -112,7 +112,6 @@ public class StackManager : MonoBehaviour
 
             bool newHigh = uiManager.SaveTopScoreIfNeeded(score);
             uiManager.ShowResetButton();
-            uiManager.ShowGameOverText();
 
             TriggerGameOverEffects();
             return;
@@ -302,7 +301,6 @@ public class StackManager : MonoBehaviour
             uiManager.ShowStartUI();
             //uiManager.UpdateScore(score);
             uiManager.HideResetButton();
-            uiManager.HideGameOverText();
 
             // Immediately kill any ongoing tweens for the camera
             DOTween.Kill(cameraFollowTarget);
