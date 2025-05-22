@@ -14,40 +14,21 @@ public class StackManager : MonoBehaviour
     public float spawnHeightOffset = 1f;
     public float perfectStackThreshold = 0.1f;
     public CinemachineCamera cineCam;
-    public GameUIManager uiManager;
 
     private GameObject lastBlock;
     private BlockMover.Axis currentAxis = BlockMover.Axis.X;
     private List<GameObject> stackBlocks = new List<GameObject>();
     private bool gameOver = false;
-    private int score = 0;
-    private bool gameStarted = false;
 
     private void Start()
     {
-        int savedTopScore = PlayerPrefs.GetInt("TopScore", 0);
-        uiManager.SetTopScore(savedTopScore);
-        uiManager.ShowStartUI();
-
         SpawnFirstBlock();
-        //SpawnNextBlock();
+        SpawnNextBlock();
     }
 
     private void Update()
     {
-        if (!gameStarted && Input.GetMouseButtonDown(0))
-        {
-            gameStarted = true;
-            score = 0;
-            uiManager.AnimateStartUIOut();
-            uiManager.AnimateScoreIn();
-            uiManager.UpdateScore(score);
-
-            SpawnNextBlock(); // Kick off the game
-            return;
-        }
-
-        if (!gameOver && gameStarted && Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)) // Click on screen
             PlaceBlock();
     }
 
@@ -104,8 +85,6 @@ public class StackManager : MonoBehaviour
 
             gameOver = true;
 
-            uiManager.SaveTopScoreIfNeeded(score);
-
             TriggerGameOverEffects();
             return;
         }
@@ -122,9 +101,6 @@ public class StackManager : MonoBehaviour
             float previousHeight = previousBlock.localScale.y;
             float targetY = previousBlock.position.y + (previousHeight / 2f) + (currentHeight / 2f);
 
-            score++;
-            uiManager.UpdateScore(score);
-
             DropBlock(currentBlock, targetY, () =>
             {
                 stackBlocks.Add(currentBlock.gameObject);
@@ -139,9 +115,6 @@ public class StackManager : MonoBehaviour
         float prevHeight = previousBlock.localScale.y;
 
         float finalY = previousBlock.position.y + (prevHeight / 2f) + (currHeight / 2f);
-
-        score++;
-        uiManager.UpdateScore(score);
 
         DropBlock(currentBlock, finalY, () =>
         {

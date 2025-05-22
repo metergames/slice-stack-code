@@ -39,8 +39,10 @@ public class StackManager : MonoBehaviour
         {
             gameStarted = true;
             score = 0;
-            uiManager.AnimateStartUIOut();
-            uiManager.AnimateScoreIn();
+            uiManager.AnimateStartUIOut(() =>
+            {
+                uiManager.AnimateScoreIn();
+            });
             uiManager.UpdateScore(score);
 
             SpawnNextBlock(); // Kick off the game

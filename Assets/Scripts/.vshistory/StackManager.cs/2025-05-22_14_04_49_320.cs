@@ -15,20 +15,18 @@ public class StackManager : MonoBehaviour
     public float perfectStackThreshold = 0.1f;
     public CinemachineCamera cineCam;
     public GameUIManager uiManager;
+    public int topScore = 0;
 
     private GameObject lastBlock;
     private BlockMover.Axis currentAxis = BlockMover.Axis.X;
     private List<GameObject> stackBlocks = new List<GameObject>();
     private bool gameOver = false;
-    private int score = 0;
     private bool gameStarted = false;
+    private int score = 0;
 
     private void Start()
     {
-        int savedTopScore = PlayerPrefs.GetInt("TopScore", 0);
-        uiManager.SetTopScore(savedTopScore);
-        uiManager.ShowStartUI();
-
+        uiManager.ShowStartUI(topScore);
         SpawnFirstBlock();
         //SpawnNextBlock();
     }
@@ -38,10 +36,9 @@ public class StackManager : MonoBehaviour
         if (!gameStarted && Input.GetMouseButtonDown(0))
         {
             gameStarted = true;
+            uiManager.HideStartUI();
+            uiManager.ResetScore();
             score = 0;
-            uiManager.AnimateStartUIOut();
-            uiManager.AnimateScoreIn();
-            uiManager.UpdateScore(score);
 
             SpawnNextBlock(); // Kick off the game
             return;
@@ -103,8 +100,6 @@ public class StackManager : MonoBehaviour
             rbLoss.angularVelocity = Random.insideUnitSphere * 5f;
 
             gameOver = true;
-
-            uiManager.SaveTopScoreIfNeeded(score);
 
             TriggerGameOverEffects();
             return;
