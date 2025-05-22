@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class GameUIManager : MonoBehaviour
 {
-    [Header("Text References")]
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI topScoreText;
     public TextMeshProUGUI tapToStartText;
     public TextMeshProUGUI scoreText;
-
-    [Header("UI Groups")]
     public CanvasGroup fadePanelGroup;
     public CanvasGroup resetButtonGroup;
 
@@ -57,8 +54,6 @@ public class GameUIManager : MonoBehaviour
         {
             topScore = finalScore;
             PlayerPrefs.SetInt("TopScore", topScore);
-            PlayerPrefs.Save(); // Force save immediately
-            scoreText.text = topScore.ToString(); // Show new top score before reset
             return true;
         }
 

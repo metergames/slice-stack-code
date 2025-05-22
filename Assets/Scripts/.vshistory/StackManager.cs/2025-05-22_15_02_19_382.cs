@@ -22,8 +22,6 @@ public class StackManager : MonoBehaviour
     private bool gameOver = false;
     private int score = 0;
     private bool gameStarted = false;
-    private float initialOrthoSize;
-    private bool blockIsDropping = false;
 
     private void Start()
     {
@@ -31,15 +29,13 @@ public class StackManager : MonoBehaviour
         uiManager.SetTopScore(savedTopScore);
         uiManager.ShowStartUI();
 
-        initialOrthoSize = cineCam.Lens.OrthographicSize;
-
         SpawnFirstBlock();
         //SpawnNextBlock();
     }
 
     private void Update()
     {
-        if (!gameStarted && !blockIsDropping && Input.GetMouseButtonDown(0))
+        if (!gameStarted && Input.GetMouseButtonDown(0))
         {
             gameStarted = true;
             score = 0;
@@ -51,7 +47,7 @@ public class StackManager : MonoBehaviour
             return;
         }
 
-        if (!gameOver && gameStarted && !blockIsDropping && Input.GetMouseButtonDown(0))
+        if (!gameOver && gameStarted && Input.GetMouseButtonDown(0))
             PlaceBlock();
     }
 
@@ -88,8 +84,6 @@ public class StackManager : MonoBehaviour
         if (gameOver)
             return;
 
-        blockIsDropping = true;
-
         BlockMover mover = lastBlock.GetComponent<BlockMover>();
         mover.StopMovement();
 
@@ -110,7 +104,7 @@ public class StackManager : MonoBehaviour
 
             gameOver = true;
 
-            bool newHigh = uiManager.SaveTopScoreIfNeeded(score);
+            uiManager.SaveTopScoreIfNeeded(score);
             uiManager.ShowResetButton();
 
             TriggerGameOverEffects();
@@ -136,7 +130,6 @@ public class StackManager : MonoBehaviour
             {
                 stackBlocks.Add(currentBlock.gameObject);
                 SpawnNextBlock();
-                blockIsDropping = false;
             });
 
             MoveCamera();
@@ -157,7 +150,6 @@ public class StackManager : MonoBehaviour
 
             //stackBlocks.Add(currentBlock.gameObject);
             SpawnNextBlock();
-            blockIsDropping = false;
         });
 
         MoveCamera();
@@ -229,7 +221,6 @@ public class StackManager : MonoBehaviour
             : new Vector3(currPos.x, currPos.y, current.transform.position.z + direction * (overlap / 2f + cutSize / 2f));
 
         GameObject fallingBlock = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        fallingBlock.name = "SlicedCube";
         fallingBlock.transform.localScale = cutScale;
         fallingBlock.transform.position = cutPos;
         fallingBlock.GetComponent<Renderer>().material = current.GetComponent<Renderer>().material;
@@ -253,12 +244,13 @@ public class StackManager : MonoBehaviour
         cameraFollowTarget.DOMove(zoomOutTargetPos, 1f).SetEase(Ease.OutSine);
 
         // Animate zoom out via FOV (orthographic camera)
-        float targetSize = initialOrthoSize + 3f;
+        float originalSize = cineCam.Lens.OrthographicSize;
+        float targetSize = originalSize + 3f;
 
         DOTween.To(() => cineCam.Lens.OrthographicSize, x => cineCam.Lens.OrthographicSize = x, targetSize, 1f)
             .SetEase(Ease.OutSine);
 
-        // Camera sway after zoom-out
+        // Optional: camera sway after zoom-out
         Vector3 swayTarget = zoomOutTargetPos + new Vector3(1f, 0f, 0f);
         cameraFollowTarget.DOMove(swayTarget, 8f)
             .SetEase(Ease.InOutSine)
@@ -280,14 +272,6 @@ public class StackManager : MonoBehaviour
             stackBlocks.Clear();
             stackBlocks.Add(baseBlock);
 
-            // Clear "SlicedCube"s
-            GameObject[] allObjects = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None);
-            foreach (GameObject go in allObjects)
-            {
-                if (go.name == "SlicedCube")
-                    Destroy(go);
-            }
-
             // Reset references
             lastBlock = baseBlock;
 
@@ -299,7 +283,7 @@ public class StackManager : MonoBehaviour
 
             uiManager.SetTopScore(PlayerPrefs.GetInt("TopScore", 0));
             uiManager.ShowStartUI();
-            //uiManager.UpdateScore(score);
+            uiManager.UpdateScore(score);
             uiManager.HideResetButton();
 
             // Immediately kill any ongoing tweens for the camera
@@ -308,13 +292,10 @@ public class StackManager : MonoBehaviour
             // Reset camera position
             Vector3 camResetPos = lastBlock.transform.position + new Vector3(0f, 0f, 0f);
             cameraFollowTarget.position = camResetPos;
-            cineCam.Lens.OrthographicSize = initialOrthoSize;
 
             // Reset score label position
             RectTransform rt = uiManager.scoreText.rectTransform;
-            rt.anchoredPosition = new Vector2(0, -425); // Default position
-
-            blockIsDropping = false;
+            rt.anchoredPosition = new Vector2(0, -425); // Your default position
 
             uiManager.FadeFromBlack();
         });

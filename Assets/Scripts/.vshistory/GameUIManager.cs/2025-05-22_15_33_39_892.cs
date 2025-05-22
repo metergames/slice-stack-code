@@ -16,6 +16,11 @@ public class GameUIManager : MonoBehaviour
 
     private int topScore = 0;
 
+    void Awake()
+    {
+        topScore = PlayerPrefs.GetInt("TopScore", 0);
+    }
+
     public void ShowStartUI()
     {
         titleText.gameObject.SetActive(true);
@@ -57,8 +62,6 @@ public class GameUIManager : MonoBehaviour
         {
             topScore = finalScore;
             PlayerPrefs.SetInt("TopScore", topScore);
-            PlayerPrefs.Save(); // Force save immediately
-            scoreText.text = topScore.ToString(); // Show new top score before reset
             return true;
         }
 

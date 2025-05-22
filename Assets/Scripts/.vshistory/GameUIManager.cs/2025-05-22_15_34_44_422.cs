@@ -57,8 +57,6 @@ public class GameUIManager : MonoBehaviour
         {
             topScore = finalScore;
             PlayerPrefs.SetInt("TopScore", topScore);
-            PlayerPrefs.Save(); // Force save immediately
-            scoreText.text = topScore.ToString(); // Show new top score before reset
             return true;
         }
 

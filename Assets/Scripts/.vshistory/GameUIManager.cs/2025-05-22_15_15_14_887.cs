@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class GameUIManager : MonoBehaviour
 {
-    [Header("Text References")]
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI topScoreText;
     public TextMeshProUGUI tapToStartText;
     public TextMeshProUGUI scoreText;
-
-    [Header("UI Groups")]
     public CanvasGroup fadePanelGroup;
     public CanvasGroup resetButtonGroup;
 
@@ -51,18 +48,13 @@ public class GameUIManager : MonoBehaviour
         scoreText.text = score.ToString();
     }
 
-    public bool SaveTopScoreIfNeeded(int finalScore)
+    public void SaveTopScoreIfNeeded(int finalScore)
     {
         if (finalScore > topScore)
         {
             topScore = finalScore;
             PlayerPrefs.SetInt("TopScore", topScore);
-            PlayerPrefs.Save(); // Force save immediately
-            scoreText.text = topScore.ToString(); // Show new top score before reset
-            return true;
         }
-
-        return false;
     }
 
     public void AnimateStartUIOut(System.Action onComplete = null)

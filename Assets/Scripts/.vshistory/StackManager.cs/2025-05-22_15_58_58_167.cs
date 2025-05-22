@@ -39,7 +39,7 @@ public class StackManager : MonoBehaviour
 
     private void Update()
     {
-        if (!gameStarted && !blockIsDropping && Input.GetMouseButtonDown(0))
+        if (!gameStarted && Input.GetMouseButtonDown(0))
         {
             gameStarted = true;
             score = 0;
@@ -281,12 +281,9 @@ public class StackManager : MonoBehaviour
             stackBlocks.Add(baseBlock);
 
             // Clear "SlicedCube"s
-            GameObject[] allObjects = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None);
-            foreach (GameObject go in allObjects)
-            {
-                if (go.name == "SlicedCube")
-                    Destroy(go);
-            }
+            GameObject[] slicedCubes = GameObject.FindGameObjectsWithTag("SlicedCube");
+            foreach (GameObject slicedCube in slicedCubes)
+                Destroy(slicedCube);
 
             // Reset references
             lastBlock = baseBlock;
@@ -295,6 +292,7 @@ public class StackManager : MonoBehaviour
             score = 0;
             gameOver = false;
             gameStarted = false;
+            blockIsDropping = false;
             currentAxis = BlockMover.Axis.X;
 
             uiManager.SetTopScore(PlayerPrefs.GetInt("TopScore", 0));
@@ -313,8 +311,6 @@ public class StackManager : MonoBehaviour
             // Reset score label position
             RectTransform rt = uiManager.scoreText.rectTransform;
             rt.anchoredPosition = new Vector2(0, -425); // Default position
-
-            blockIsDropping = false;
 
             uiManager.FadeFromBlack();
         });
