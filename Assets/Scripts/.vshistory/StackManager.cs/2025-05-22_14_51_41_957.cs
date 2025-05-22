@@ -290,7 +290,7 @@ public class StackManager : MonoBehaviour
             DOTween.Kill(cameraFollowTarget);
 
             // Reset camera position
-            Vector3 camResetPos = lastBlock.transform.position + new Vector3(0f, 0f, 0f);
+            Vector3 camResetPos = lastBlock.transform.position + new Vector3(0f, 8f, -10f); // adjust as needed
             cameraFollowTarget.position = camResetPos;
 
             // Reset score label position

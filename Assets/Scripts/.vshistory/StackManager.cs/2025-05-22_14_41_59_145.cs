@@ -261,41 +261,29 @@ public class StackManager : MonoBehaviour
     {
         uiManager.FadeToBlack(() =>
         {
-            // Destroy all blocks except the base block
+            // Destroy stack blocks (except base)
             for (int i = 1; i < stackBlocks.Count; i++)
             {
                 Destroy(stackBlocks[i]);
             }
+            stackBlocks.RemoveRange(1, stackBlocks.Count - 1);
 
-            // Keep only the base block
-            GameObject baseBlock = stackBlocks[0];
-            stackBlocks.Clear();
-            stackBlocks.Add(baseBlock);
-
-            // Reset references
-            lastBlock = baseBlock;
-
-            // Reset game state
+            // Reset state
             score = 0;
             gameOver = false;
             gameStarted = false;
-            currentAxis = BlockMover.Axis.X;
-
             uiManager.SetTopScore(PlayerPrefs.GetInt("TopScore", 0));
             uiManager.ShowStartUI();
             uiManager.UpdateScore(score);
             uiManager.HideResetButton();
 
-            // Immediately kill any ongoing tweens for the camera
-            DOTween.Kill(cameraFollowTarget);
-
-            // Reset camera position
-            Vector3 camResetPos = lastBlock.transform.position + new Vector3(0f, 0f, 0f);
-            cameraFollowTarget.position = camResetPos;
+            // Reset camera
+            Vector3 startPos = stackBlocks[0].transform.position + new Vector3(0f, 8f, -10f); // adjust if needed
+            cameraFollowTarget.position = startPos;
 
             // Reset score label position
             RectTransform rt = uiManager.scoreText.rectTransform;
-            rt.anchoredPosition = new Vector2(0, -425); // Your default position
+            rt.anchoredPosition = new Vector2(0, -425); // same as your original
 
             uiManager.FadeFromBlack();
         });

@@ -22,7 +22,7 @@ public class GameUIManager : MonoBehaviour
         // Reset anchored positions (based on your original layout)
         titleText.rectTransform.anchoredPosition = new Vector2(0, -150f);
         topScoreText.rectTransform.anchoredPosition = new Vector2(0, -325f);
-        tapToStartText.rectTransform.anchoredPosition = new Vector2(0, 350f);
+        tapToStartText.rectTransform.anchoredPosition = new Vector2(0, 0f);
 
         titleText.alpha = 1f;
         topScoreText.alpha = 1f;
@@ -115,8 +115,7 @@ public class GameUIManager : MonoBehaviour
     {
         resetButtonGroup.interactable = false;
         resetButtonGroup.blocksRaycasts = false;
-        resetButtonGroup.alpha = 0f;
-        //resetButtonGroup.DOFade(0f, 0.3f).SetEase(Ease.InQuad);
+        resetButtonGroup.DOFade(0f, 0.3f).SetEase(Ease.InQuad);
     }
 
 }

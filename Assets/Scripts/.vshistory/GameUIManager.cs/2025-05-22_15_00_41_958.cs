@@ -115,8 +115,7 @@ public class GameUIManager : MonoBehaviour
     {
         resetButtonGroup.interactable = false;
         resetButtonGroup.blocksRaycasts = false;
-        resetButtonGroup.alpha = 0f;
-        //resetButtonGroup.DOFade(0f, 0.3f).SetEase(Ease.InQuad);
+        resetButtonGroup.DOFade(0f, 0.3f).SetEase(Ease.InQuad);
     }
 
 }

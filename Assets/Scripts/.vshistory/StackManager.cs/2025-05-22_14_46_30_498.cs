@@ -286,11 +286,8 @@ public class StackManager : MonoBehaviour
             uiManager.UpdateScore(score);
             uiManager.HideResetButton();
 
-            // Immediately kill any ongoing tweens for the camera
-            DOTween.Kill(cameraFollowTarget);
-
             // Reset camera position
-            Vector3 camResetPos = lastBlock.transform.position + new Vector3(0f, 0f, 0f);
+            Vector3 camResetPos = baseBlock.transform.position + new Vector3(0f, 8f, -10f); // Adjust if needed
             cameraFollowTarget.position = camResetPos;
 
             // Reset score label position

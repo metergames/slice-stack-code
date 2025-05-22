@@ -19,15 +19,21 @@ public class GameUIManager : MonoBehaviour
         topScoreText.gameObject.SetActive(true);
         tapToStartText.gameObject.SetActive(true);
 
-        // Reset anchored positions (based on your original layout)
-        titleText.rectTransform.anchoredPosition = new Vector2(0, -150f);
-        topScoreText.rectTransform.anchoredPosition = new Vector2(0, -325f);
-        tapToStartText.rectTransform.anchoredPosition = new Vector2(0, 350f);
+        // Move each label 100f lower than its last known position (reversing AnimateStartUIOut)
+        var titlePos = titleText.rectTransform.anchoredPosition;
+        var topScorePos = topScoreText.rectTransform.anchoredPosition;
+        var tapToStartPos = tapToStartText.rectTransform.anchoredPosition;
 
+        titleText.rectTransform.anchoredPosition = new Vector2(titlePos.x, titlePos.y - 100f);
+        topScoreText.rectTransform.anchoredPosition = new Vector2(topScorePos.x, topScorePos.y - 100f);
+        tapToStartText.rectTransform.anchoredPosition = new Vector2(tapToStartPos.x, tapToStartPos.y - 100f);
+
+        // Reset opacity
         titleText.alpha = 1f;
         topScoreText.alpha = 1f;
         tapToStartText.alpha = 1f;
 
+        // Reset score label text to top score
         scoreText.text = topScore.ToString();
     }
 
@@ -115,8 +121,7 @@ public class GameUIManager : MonoBehaviour
     {
         resetButtonGroup.interactable = false;
         resetButtonGroup.blocksRaycasts = false;
-        resetButtonGroup.alpha = 0f;
-        //resetButtonGroup.DOFade(0f, 0.3f).SetEase(Ease.InQuad);
+        resetButtonGroup.DOFade(0f, 0.3f).SetEase(Ease.InQuad);
     }
 
 }

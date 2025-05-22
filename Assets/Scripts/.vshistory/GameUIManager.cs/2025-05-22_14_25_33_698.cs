@@ -9,7 +9,6 @@ public class GameUIManager : MonoBehaviour
     public TextMeshProUGUI tapToStartText;
     public TextMeshProUGUI scoreText;
     public CanvasGroup fadePanelGroup;
-    public CanvasGroup resetButtonGroup;
 
     private int topScore = 0;
 
@@ -18,16 +17,6 @@ public class GameUIManager : MonoBehaviour
         titleText.gameObject.SetActive(true);
         topScoreText.gameObject.SetActive(true);
         tapToStartText.gameObject.SetActive(true);
-
-        // Reset anchored positions (based on your original layout)
-        titleText.rectTransform.anchoredPosition = new Vector2(0, -150f);
-        topScoreText.rectTransform.anchoredPosition = new Vector2(0, -325f);
-        tapToStartText.rectTransform.anchoredPosition = new Vector2(0, 350f);
-
-        titleText.alpha = 1f;
-        topScoreText.alpha = 1f;
-        tapToStartText.alpha = 1f;
-
         scoreText.text = topScore.ToString();
     }
 
@@ -97,26 +86,4 @@ public class GameUIManager : MonoBehaviour
     {
         fadePanelGroup.DOFade(0f, 0.5f).SetEase(Ease.InOutSine);
     }
-
-    public void ShowResetButton()
-    {
-        resetButtonGroup.alpha = 0f;
-        resetButtonGroup.interactable = false;
-        resetButtonGroup.blocksRaycasts = false;
-
-        resetButtonGroup.DOFade(1f, 0.5f).SetEase(Ease.OutQuad).OnComplete(() =>
-        {
-            resetButtonGroup.interactable = true;
-            resetButtonGroup.blocksRaycasts = true;
-        });
-    }
-
-    public void HideResetButton()
-    {
-        resetButtonGroup.interactable = false;
-        resetButtonGroup.blocksRaycasts = false;
-        resetButtonGroup.alpha = 0f;
-        //resetButtonGroup.DOFade(0f, 0.3f).SetEase(Ease.InQuad);
-    }
-
 }

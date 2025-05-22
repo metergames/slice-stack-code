@@ -105,7 +105,6 @@ public class StackManager : MonoBehaviour
             gameOver = true;
 
             uiManager.SaveTopScoreIfNeeded(score);
-            uiManager.ShowResetButton();
 
             TriggerGameOverEffects();
             return;
@@ -255,49 +254,5 @@ public class StackManager : MonoBehaviour
         cameraFollowTarget.DOMove(swayTarget, 8f)
             .SetEase(Ease.InOutSine)
             .SetLoops(-1, LoopType.Yoyo);
-    }
-
-    public void ResetGame()
-    {
-        uiManager.FadeToBlack(() =>
-        {
-            // Destroy all blocks except the base block
-            for (int i = 1; i < stackBlocks.Count; i++)
-            {
-                Destroy(stackBlocks[i]);
-            }
-
-            // Keep only the base block
-            GameObject baseBlock = stackBlocks[0];
-            stackBlocks.Clear();
-            stackBlocks.Add(baseBlock);
-
-            // Reset references
-            lastBlock = baseBlock;
-
-            // Reset game state
-            score = 0;
-            gameOver = false;
-            gameStarted = false;
-            currentAxis = BlockMover.Axis.X;
-
-            uiManager.SetTopScore(PlayerPrefs.GetInt("TopScore", 0));
-            uiManager.ShowStartUI();
-            uiManager.UpdateScore(score);
-            uiManager.HideResetButton();
-
-            // Immediately kill any ongoing tweens for the camera
-            DOTween.Kill(cameraFollowTarget);
-
-            // Reset camera position
-            Vector3 camResetPos = lastBlock.transform.position + new Vector3(0f, 0f, 0f);
-            cameraFollowTarget.position = camResetPos;
-
-            // Reset score label position
-            RectTransform rt = uiManager.scoreText.rectTransform;
-            rt.anchoredPosition = new Vector2(0, -425); // Your default position
-
-            uiManager.FadeFromBlack();
-        });
     }
 }
