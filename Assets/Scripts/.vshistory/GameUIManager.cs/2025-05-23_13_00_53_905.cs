@@ -141,25 +141,4 @@ public class GameUIManager : MonoBehaviour
         gameOverTextGroup.alpha = 0f;
         gameOverTextGroup.gameObject.SetActive(false);
     }
-
-    public void ShowNewHighScore()
-    {
-        newHighScoreGroup.gameObject.SetActive(true);
-        newHighScoreGroup.alpha = 1f;
-
-        RectTransform rt = newHighScoreGroup.GetComponent<RectTransform>();
-        rt.localScale = Vector3.one;
-
-        // Pulse animation
-        newHighScoreGroup.DOFade(1f, 0.2f);
-        rt.DOPunchScale(Vector3.one * 0.2f, 1.2f, 4, 0.5f).SetLoops(-1, LoopType.Yoyo);
-    }
-
-    public void HideNewHighScore()
-    {
-        newHighScoreGroup.DOKill(); // Kill any looping animations
-        newHighScoreGroup.alpha = 0f;
-        newHighScoreGroup.transform.localScale = Vector3.one;
-        newHighScoreGroup.gameObject.SetActive(false);
-    }
 }

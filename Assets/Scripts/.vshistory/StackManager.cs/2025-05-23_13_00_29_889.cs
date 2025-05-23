@@ -137,9 +137,6 @@ public class StackManager : MonoBehaviour
             gameOver = true;
 
             bool newHigh = uiManager.SaveTopScoreIfNeeded(score);
-            if (newHigh)
-                uiManager.ShowNewHighScore();
-
             uiManager.ShowResetButton();
             uiManager.ShowGameOverText();
 
@@ -330,7 +327,6 @@ public class StackManager : MonoBehaviour
             uiManager.SetTopScore(PlayerPrefs.GetInt("TopScore", 0));
             uiManager.ShowStartUI();
             //uiManager.UpdateScore(score);
-            uiManager.HideNewHighScore();
             uiManager.HideResetButton();
             uiManager.HideGameOverText();
 
