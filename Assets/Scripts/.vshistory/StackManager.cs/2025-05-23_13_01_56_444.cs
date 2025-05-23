@@ -297,8 +297,6 @@ public class StackManager : MonoBehaviour
 
     public void ResetGame()
     {
-        uiManager.AnimateFontSoftness(0f, 1f, 0.5f); // Blur out text as screen fades to black
-
         uiManager.FadeToBlack(() =>
         {
             // Destroy all blocks except the base block
@@ -349,8 +347,6 @@ public class StackManager : MonoBehaviour
             rt.anchoredPosition = new Vector2(0, -425); // Default position
 
             blockIsDropping = false;
-
-            uiManager.AnimateFontSoftness(1f, 0f, 0.5f); // Sharpen text as screen fades back in
 
             uiManager.FadeFromBlack();
         });

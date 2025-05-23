@@ -170,8 +170,8 @@ public class GameUIManager : MonoBehaviour
     {
         if (fredokaMaterial != null)
         {
-            DOTween.To(() => fredokaMaterial.GetFloat("_FaceDilate"),
-                       val => fredokaMaterial.SetFloat("_FaceDilate", val),
+            DOTween.To(() => fredokaMaterial.GetFloat("_FaceSoftness"),
+                       val => fredokaMaterial.SetFloat("_FaceSoftness", val),
                        to, duration)
                    .From(from)
                    .SetEase(Ease.InOutSine);
@@ -179,8 +179,8 @@ public class GameUIManager : MonoBehaviour
 
         if (orbitronMaterial != null)
         {
-            DOTween.To(() => orbitronMaterial.GetFloat("_FaceDilate"),
-                       val => orbitronMaterial.SetFloat("_FaceDilate", val),
+            DOTween.To(() => orbitronMaterial.GetFloat("_FaceSoftness"),
+                       val => orbitronMaterial.SetFloat("_FaceSoftness", val),
                        to, duration)
                    .From(from)
                    .SetEase(Ease.InOutSine);

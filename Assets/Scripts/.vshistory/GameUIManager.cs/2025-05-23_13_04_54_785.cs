@@ -16,10 +16,6 @@ public class GameUIManager : MonoBehaviour
     public CanvasGroup gameOverTextGroup;
     public CanvasGroup newHighScoreGroup;
 
-    [Header("Font Materials")]
-    public Material fredokaMaterial;
-    public Material orbitronMaterial;
-
     private int topScore = 0;
 
     public void ShowStartUI()
@@ -165,25 +161,5 @@ public class GameUIManager : MonoBehaviour
         newHighScoreGroup.alpha = 0f;
         newHighScoreGroup.transform.localScale = Vector3.one;
         newHighScoreGroup.gameObject.SetActive(false);
-    }
-    public void AnimateFontSoftness(float from, float to, float duration)
-    {
-        if (fredokaMaterial != null)
-        {
-            DOTween.To(() => fredokaMaterial.GetFloat("_FaceDilate"),
-                       val => fredokaMaterial.SetFloat("_FaceDilate", val),
-                       to, duration)
-                   .From(from)
-                   .SetEase(Ease.InOutSine);
-        }
-
-        if (orbitronMaterial != null)
-        {
-            DOTween.To(() => orbitronMaterial.GetFloat("_FaceDilate"),
-                       val => orbitronMaterial.SetFloat("_FaceDilate", val),
-                       to, duration)
-                   .From(from)
-                   .SetEase(Ease.InOutSine);
-        }
     }
 }

@@ -1425,6 +1425,8 @@ MonoBehaviour:
   resetButtonGroup: {fileID: 84805965}
   gameOverTextGroup: {fileID: 578144772}
   newHighScoreGroup: {fileID: 1815628644}
+  fredokaMaterial: {fileID: 871290023645333043, guid: 38bd54b9753c5cf4ba29f0dc98e70292, type: 2}
+  orbitronMaterial: {fileID: 1254716419135124414, guid: 7455982a70d643c41a1cd1da28936bc2, type: 2}
 --- !u!4 &1028247429
 Transform:
   m_ObjectHideFlags: 0
