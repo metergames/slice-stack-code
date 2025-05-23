@@ -334,7 +334,7 @@ public class StackManager : MonoBehaviour
             DOTween.Kill(cameraFollowTarget);
 
             // Reset camera position
-            Vector3 camResetPos = lastBlock.transform.position + new Vector3(0f, 2f, 0f);
+            Vector3 camResetPos = lastBlock.transform.position + new Vector3(0f, 0f, 0f);
             cameraFollowTarget.position = camResetPos;
             cineCam.Lens.OrthographicSize = initialOrthoSize;
 

@@ -80,24 +80,6 @@ public class StackManager : MonoBehaviour
         GameObject newBlock = Instantiate(blockPrefab, spawnPos, Quaternion.identity);
         newBlock.transform.localScale = spawnScale;
 
-        hue += 8f;
-        hue = Mathf.Repeat(hue, 360f);
-
-        Color blockColor = ColorUtils.ColorFromHSL(hue, saturation, lightness);
-        SetBlockColor(newBlock, blockColor);
-
-        // Adjust background to be vibrant but contrasting
-        float skyHue = Mathf.Repeat(hue + 45f, 360f); // not full complement—just a nice offset
-        float skySaturation = Mathf.Clamp01(saturation + 0.2f);
-        float skyLightness = Mathf.Clamp01(lightness + 0.2f);
-
-        Color skyTop = ColorUtils.ColorFromHSL(skyHue, skySaturation, skyLightness);
-        Color skyBottom = ColorUtils.ColorFromHSL(skyHue, skySaturation * 0.8f, skyLightness * 0.8f);
-
-        // Apply to material with tween
-        gradientMaterial.DOColor(skyTop, "_TopColor", 0.6f);
-        gradientMaterial.DOColor(skyBottom, "_BottomColor", 0.6f);
-
         BlockMover mover = newBlock.GetComponent<BlockMover>();
         mover.moveAxis = currentAxis;
         mover.StartMovement();
@@ -334,7 +316,7 @@ public class StackManager : MonoBehaviour
             DOTween.Kill(cameraFollowTarget);
 
             // Reset camera position
-            Vector3 camResetPos = lastBlock.transform.position + new Vector3(0f, 2f, 0f);
+            Vector3 camResetPos = lastBlock.transform.position + new Vector3(0f, 0f, 0f);
             cameraFollowTarget.position = camResetPos;
             cineCam.Lens.OrthographicSize = initialOrthoSize;
 
@@ -346,15 +328,5 @@ public class StackManager : MonoBehaviour
 
             uiManager.FadeFromBlack();
         });
-    }
-
-    private void SetBlockColor(GameObject block, Color color)
-    {
-        Renderer renderer = block.GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            renderer.material = new Material(renderer.material); // Clone material to avoid affecting others
-            renderer.material.color = color;
-        }
     }
 }

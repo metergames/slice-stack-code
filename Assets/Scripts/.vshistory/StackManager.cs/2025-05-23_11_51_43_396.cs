@@ -67,6 +67,17 @@ public class StackManager : MonoBehaviour
     {
         lastBlock = Instantiate(blockPrefab, startPosition.position, Quaternion.identity);
         lastBlock.name = "BaseBlock";
+
+        // Scale it up only here
+        Vector3 scale = lastBlock.transform.localScale;
+        scale.y = 5f;
+        lastBlock.transform.localScale = scale;
+
+        // Push it down more
+        Vector3 pos = lastBlock.transform.position;
+        pos.y -= (scale.y / 2f) + 1f; // extra offset for deeper base
+        lastBlock.transform.position = pos;
+
         lastBlock.GetComponent<BlockMover>().enabled = false;
         stackBlocks.Add(lastBlock);
     }
@@ -334,7 +345,7 @@ public class StackManager : MonoBehaviour
             DOTween.Kill(cameraFollowTarget);
 
             // Reset camera position
-            Vector3 camResetPos = lastBlock.transform.position + new Vector3(0f, 2f, 0f);
+            Vector3 camResetPos = lastBlock.transform.position + new Vector3(0f, 0f, 0f);
             cameraFollowTarget.position = camResetPos;
             cineCam.Lens.OrthographicSize = initialOrthoSize;
 
