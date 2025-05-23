@@ -267,11 +267,7 @@ public class StackManager : MonoBehaviour
         Rigidbody rb = fallingBlock.AddComponent<Rigidbody>();
         rb.mass = 0.5f;
         rb.angularVelocity = Random.insideUnitSphere * 5f;
-
-        // Smart cleanup logic
-        FallingBlock fb = fallingBlock.AddComponent<FallingBlock>();
-        fb.Init(cameraFollowTarget);
-        //Destroy(fallingBlock, 2f); // Auto-cleanup
+        Destroy(fallingBlock, 2f); // Auto-cleanup
     }
 
     private void TriggerGameOverEffects()
