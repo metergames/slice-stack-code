@@ -57,8 +57,6 @@ public class StackManager : MonoBehaviour
             uiManager.AnimateScoreIn();
             uiManager.UpdateScore(score);
 
-            audioManager.PlayUISound();
-
             SpawnNextBlock(); // Kick off the game
             return;
         }

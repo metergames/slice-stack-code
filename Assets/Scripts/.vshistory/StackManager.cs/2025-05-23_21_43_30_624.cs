@@ -17,7 +17,6 @@ public class StackManager : MonoBehaviour
     public GameUIManager uiManager;
     public Material gradientMaterial;
     public GameObject perfectEffectPrefab;
-    public AudioManager audioManager;
 
     private GameObject lastBlock;
     private BlockMover.Axis currentAxis = BlockMover.Axis.X;
@@ -56,8 +55,6 @@ public class StackManager : MonoBehaviour
             uiManager.AnimateStartUIOut();
             uiManager.AnimateScoreIn();
             uiManager.UpdateScore(score);
-
-            audioManager.PlayUISound();
 
             SpawnNextBlock(); // Kick off the game
             return;
@@ -273,8 +270,6 @@ public class StackManager : MonoBehaviour
         rb.mass = 0.5f;
         rb.angularVelocity = Random.insideUnitSphere * 5f;
 
-        audioManager.PlaySFX(audioManager.sliceClip);
-
         // Smart cleanup logic
         FallingBlock fb = fallingBlock.AddComponent<FallingBlock>();
         fb.Init(cameraFollowTarget);
@@ -286,8 +281,6 @@ public class StackManager : MonoBehaviour
         if (cameraFollowTarget == null || cineCam == null) return;
 
         DOTween.Kill(cameraFollowTarget);
-
-        audioManager.PlaySFX(audioManager.failClip);
 
         Vector3 camPos = cameraFollowTarget.position;
         Vector3 zoomOutTargetPos = camPos + new Vector3(0f, -3f, 0f); // just move down
@@ -383,7 +376,6 @@ public class StackManager : MonoBehaviour
     {
         Vector3 spawnPos = block.position + Vector3.down * 0.5f; // 1.5f lower
 
-        audioManager.PlaySFX(audioManager.perfectClip);
         GameObject fx = Instantiate(perfectEffectPrefab, spawnPos, Quaternion.Euler(0f, 0f, 0f)); // Rotate so plane faces up
         fx.GetComponent<PerfectEffect>().Play(block.localScale);
     }
