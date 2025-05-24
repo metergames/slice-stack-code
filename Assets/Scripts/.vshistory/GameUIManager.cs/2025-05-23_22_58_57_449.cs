@@ -166,7 +166,6 @@ public class GameUIManager : MonoBehaviour
         newHighScoreGroup.transform.localScale = Vector3.one;
         newHighScoreGroup.gameObject.SetActive(false);
     }
-
     public void AnimateFontSoftness(float from, float to, float duration)
     {
         if (fredokaMaterial != null)
@@ -185,34 +184,6 @@ public class GameUIManager : MonoBehaviour
                        to, duration)
                    .From(from)
                    .SetEase(Ease.InOutSine);
-        }
-    }
-
-    public void AnimateScorePopup(bool isPerfect = false)
-    {
-        RectTransform rt = scoreText.rectTransform;
-        TextMeshProUGUI text = scoreText;
-
-        DOTween.Kill(rt);
-        DOTween.Kill(text); // in case color is tweening too
-
-        rt.localScale = Vector3.one;
-        text.color = Color.white;
-
-        if (isPerfect)
-        {
-            // Bigger scale and flash color
-            rt.DOScale(1.3f, 0.15f).SetEase(Ease.OutBack)
-              .OnComplete(() => rt.DOScale(1f, 0.25f).SetEase(Ease.OutCubic));
-
-            text.DOColor(new Color32(255, 245, 204, 255), 0.1f)
-                .OnComplete(() => text.DOColor(Color.white, 0.3f));
-        }
-        else
-        {
-            // Regular bounce
-            rt.DOScale(1.2f, 0.1f).SetEase(Ease.OutBack)
-              .OnComplete(() => rt.DOScale(1f, 0.2f).SetEase(Ease.OutCubic));
         }
     }
 }

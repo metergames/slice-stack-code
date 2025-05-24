@@ -165,7 +165,6 @@ public class StackManager : MonoBehaviour
 
             score++;
             uiManager.UpdateScore(score);
-            uiManager.AnimateScorePopup(true);
 
             DropBlock(currentBlock, targetY, () =>
             {
@@ -186,7 +185,6 @@ public class StackManager : MonoBehaviour
 
         score++;
         uiManager.UpdateScore(score);
-        uiManager.AnimateScorePopup();
 
         DropBlock(currentBlock, finalY, () =>
         {
