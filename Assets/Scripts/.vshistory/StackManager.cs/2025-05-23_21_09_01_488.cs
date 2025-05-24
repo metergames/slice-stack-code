@@ -16,7 +16,6 @@ public class StackManager : MonoBehaviour
     public CinemachineCamera cineCam;
     public GameUIManager uiManager;
     public Material gradientMaterial;
-    public GameObject perfectEffectPrefab;
 
     private GameObject lastBlock;
     private BlockMover.Axis currentAxis = BlockMover.Axis.X;
@@ -160,6 +159,8 @@ public class StackManager : MonoBehaviour
             float previousHeight = previousBlock.localScale.y;
             float targetY = previousBlock.position.y + (previousHeight / 2f) + (currentHeight / 2f);
 
+            SpawnPerfectEffect(currentBlock);
+
             score++;
             uiManager.UpdateScore(score);
 
@@ -168,7 +169,6 @@ public class StackManager : MonoBehaviour
                 stackBlocks.Add(currentBlock.gameObject);
                 SpawnNextBlock();
                 blockIsDropping = false;
-                SpawnPerfectEffect(currentBlock);
             });
 
             MoveCamera();
@@ -370,13 +370,5 @@ public class StackManager : MonoBehaviour
             renderer.material = new Material(renderer.material); // Clone material to avoid affecting others
             renderer.material.color = color;
         }
-    }
-
-    private void SpawnPerfectEffect(Transform block)
-    {
-        Vector3 spawnPos = block.position + Vector3.down * 0.5f; // 1.5f lower
-
-        GameObject fx = Instantiate(perfectEffectPrefab, spawnPos, Quaternion.Euler(0f, 0f, 0f)); // Rotate so plane faces up
-        fx.GetComponent<PerfectEffect>().Play(block.localScale);
     }
 }

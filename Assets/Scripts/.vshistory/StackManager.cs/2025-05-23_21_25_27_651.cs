@@ -160,6 +160,8 @@ public class StackManager : MonoBehaviour
             float previousHeight = previousBlock.localScale.y;
             float targetY = previousBlock.position.y + (previousHeight / 2f) + (currentHeight / 2f);
 
+            SpawnPerfectEffect(currentBlock);
+
             score++;
             uiManager.UpdateScore(score);
 
@@ -168,7 +170,6 @@ public class StackManager : MonoBehaviour
                 stackBlocks.Add(currentBlock.gameObject);
                 SpawnNextBlock();
                 blockIsDropping = false;
-                SpawnPerfectEffect(currentBlock);
             });
 
             MoveCamera();
@@ -374,7 +375,7 @@ public class StackManager : MonoBehaviour
 
     private void SpawnPerfectEffect(Transform block)
     {
-        Vector3 spawnPos = block.position + Vector3.down * 0.5f; // 1.5f lower
+        Vector3 spawnPos = block.position + Vector3.down * 1f;
 
         GameObject fx = Instantiate(perfectEffectPrefab, spawnPos, Quaternion.Euler(0f, 0f, 0f)); // Rotate so plane faces up
         fx.GetComponent<PerfectEffect>().Play(block.localScale);
