@@ -166,10 +166,10 @@ public class StackManager : MonoBehaviour
             score++;
             uiManager.UpdateScore(score);
             uiManager.AnimateScorePopup(true);
+            audioManager.PlaySFX(audioManager.perfectClip);
 
             DropBlock(currentBlock, targetY, () =>
             {
-                audioManager.PlaySFX(audioManager.perfectClip);
                 stackBlocks.Add(currentBlock.gameObject);
                 SpawnNextBlock();
                 blockIsDropping = false;

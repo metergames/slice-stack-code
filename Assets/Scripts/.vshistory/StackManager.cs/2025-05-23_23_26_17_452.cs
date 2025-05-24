@@ -169,7 +169,6 @@ public class StackManager : MonoBehaviour
 
             DropBlock(currentBlock, targetY, () =>
             {
-                audioManager.PlaySFX(audioManager.perfectClip);
                 stackBlocks.Add(currentBlock.gameObject);
                 SpawnNextBlock();
                 blockIsDropping = false;
@@ -224,8 +223,6 @@ public class StackManager : MonoBehaviour
 
     private void SliceBlock(GameObject current, GameObject previous, BlockMover.Axis axis)
     {
-        audioManager.PlaySFX(audioManager.sliceClip);
-
         Vector3 currPos = current.transform.position;
         Vector3 prevPos = previous.transform.position;
 
@@ -278,6 +275,8 @@ public class StackManager : MonoBehaviour
         rb.mass = 0.5f;
         rb.angularVelocity = Random.insideUnitSphere * 5f;
 
+        audioManager.PlaySFX(audioManager.sliceClip);
+
         // Smart cleanup logic
         FallingBlock fb = fallingBlock.AddComponent<FallingBlock>();
         fb.Init(cameraFollowTarget);
@@ -288,9 +287,9 @@ public class StackManager : MonoBehaviour
     {
         if (cameraFollowTarget == null || cineCam == null) return;
 
-        audioManager.PlaySFX(audioManager.failClip);
-
         DOTween.Kill(cameraFollowTarget);
+
+        audioManager.PlaySFX(audioManager.failClip);
 
         Vector3 camPos = cameraFollowTarget.position;
         Vector3 zoomOutTargetPos = camPos + new Vector3(0f, -3f, 0f); // just move down
@@ -386,6 +385,7 @@ public class StackManager : MonoBehaviour
     {
         Vector3 spawnPos = block.position + Vector3.down * 0.5f; // 1.5f lower
 
+        audioManager.PlaySFX(audioManager.perfectClip);
         GameObject fx = Instantiate(perfectEffectPrefab, spawnPos, Quaternion.Euler(0f, 0f, 0f)); // Rotate so plane faces up
         fx.GetComponent<PerfectEffect>().Play(block.localScale);
     }
