@@ -213,7 +213,7 @@ public class StackManager : MonoBehaviour
 
         // Smooth move
         DOTween.Kill(cameraFollowTarget); // In case one already exists
-        cameraFollowTarget.DOMoveY(newTargetY, 0.4f).SetEase(Ease.OutSine);
+        cameraFollowTarget.DOMoveY(newTargetY, 0.375f).SetEase(Ease.OutSine);
     }
 
     private void DropBlock(Transform block, float targetY, System.Action onComplete)
@@ -221,7 +221,7 @@ public class StackManager : MonoBehaviour
         //Vector3 targetPosition = block.position;
         //targetPosition.y = lastBlock.transform.position.y + (blockHeight / 2f);
 
-        block.DOMoveY(targetY, 0.4f).SetEase(Ease.OutBounce).OnComplete(() => onComplete?.Invoke());
+        block.DOMoveY(targetY, 0.375f).SetEase(Ease.OutBounce).OnComplete(() => onComplete?.Invoke());
     }
 
     private void SliceBlock(GameObject current, GameObject previous, BlockMover.Axis axis)

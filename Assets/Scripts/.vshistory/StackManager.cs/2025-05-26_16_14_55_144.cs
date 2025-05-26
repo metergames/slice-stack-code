@@ -213,7 +213,7 @@ public class StackManager : MonoBehaviour
 
         // Smooth move
         DOTween.Kill(cameraFollowTarget); // In case one already exists
-        cameraFollowTarget.DOMoveY(newTargetY, 0.4f).SetEase(Ease.OutSine);
+        cameraFollowTarget.DOMoveY(newTargetY, 0.45f).SetEase(Ease.OutSine);
     }
 
     private void DropBlock(Transform block, float targetY, System.Action onComplete)
@@ -221,7 +221,7 @@ public class StackManager : MonoBehaviour
         //Vector3 targetPosition = block.position;
         //targetPosition.y = lastBlock.transform.position.y + (blockHeight / 2f);
 
-        block.DOMoveY(targetY, 0.4f).SetEase(Ease.OutBounce).OnComplete(() => onComplete?.Invoke());
+        block.DOMoveY(targetY, 0.45f).SetEase(Ease.OutBounce).OnComplete(() => onComplete?.Invoke());
     }
 
     private void SliceBlock(GameObject current, GameObject previous, BlockMover.Axis axis)
@@ -298,17 +298,17 @@ public class StackManager : MonoBehaviour
         Vector3 zoomOutTargetPos = camPos + new Vector3(0f, -3f, 0f); // just move down
 
         // Animate follow target position
-        cameraFollowTarget.DOMove(zoomOutTargetPos, 0.4f).SetEase(Ease.OutSine);
+        cameraFollowTarget.DOMove(zoomOutTargetPos, 1f).SetEase(Ease.OutSine);
 
         // Animate zoom out via FOV (orthographic camera)
         float targetSize = initialOrthoSize + 3f;
 
-        DOTween.To(() => cineCam.Lens.OrthographicSize, x => cineCam.Lens.OrthographicSize = x, targetSize, 0.4f)
+        DOTween.To(() => cineCam.Lens.OrthographicSize, x => cineCam.Lens.OrthographicSize = x, targetSize, 1f)
             .SetEase(Ease.OutSine);
 
         // Camera sway after zoom-out
         Vector3 swayTarget = zoomOutTargetPos + new Vector3(1f, 0f, 0f);
-        cameraFollowTarget.DOMove(swayTarget, 3.2f)
+        cameraFollowTarget.DOMove(swayTarget, 8f)
             .SetEase(Ease.InOutSine)
             .SetLoops(-1, LoopType.Yoyo);
     }
