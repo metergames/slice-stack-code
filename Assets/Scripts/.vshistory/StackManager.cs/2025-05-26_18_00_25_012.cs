@@ -280,7 +280,7 @@ public class StackManager : MonoBehaviour
 
         Rigidbody rb = fallingBlock.AddComponent<Rigidbody>();
         rb.mass = 0.5f;
-        rb.angularVelocity = Random.insideUnitSphere * 3f;
+        rb.angularVelocity = Random.insideUnitSphere * 5f;
 
         // Smart cleanup logic
         FallingBlock fb = fallingBlock.AddComponent<FallingBlock>();
