@@ -30,8 +30,8 @@ public class GameUIManager : MonoBehaviour
 
         // Reset anchored positions (based on your original layout)
         titleText.rectTransform.anchoredPosition = new Vector2(0, -225f);
-        topScoreText.rectTransform.anchoredPosition = new Vector2(0, -415f);
-        tapToStartText.rectTransform.anchoredPosition = new Vector2(0, 450f);
+        topScoreText.rectTransform.anchoredPosition = new Vector2(0, -325f);
+        tapToStartText.rectTransform.anchoredPosition = new Vector2(0, 350f);
 
         titleText.alpha = 1f;
         topScoreText.alpha = 1f;

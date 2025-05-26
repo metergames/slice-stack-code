@@ -362,7 +362,7 @@ public class StackManager : MonoBehaviour
 
             // Reset score label position
             RectTransform rt = uiManager.scoreText.rectTransform;
-            rt.anchoredPosition = new Vector2(0, -565); // Default position
+            rt.anchoredPosition = new Vector2(0, -425); // Default position
 
             blockIsDropping = false;
 
