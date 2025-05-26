@@ -309,10 +309,12 @@ MonoBehaviour:
   mainMixer: {fileID: 24100000, guid: bb697dacffe89e742b286745c4c432f4, type: 2}
   sfxGroup: {fileID: -7841070426281443096, guid: bb697dacffe89e742b286745c4c432f4, type: 2}
   uiGroup: {fileID: 6401286868652556871, guid: bb697dacffe89e742b286745c4c432f4, type: 2}
+  musicGroup: {fileID: -2924309054622602674, guid: bb697dacffe89e742b286745c4c432f4, type: 2}
   sliceClip: {fileID: 8300000, guid: 5c30d75be5c4d044da77854ab632cf54, type: 3}
   perfectClip: {fileID: 8300000, guid: 26c46ec6368d08e4ba400596115ad73f, type: 3}
   failClip: {fileID: 8300000, guid: 02cedd2c1d8d33241992901e21d77d6a, type: 3}
   uiClickClip: {fileID: 8300000, guid: 427d20eba813a7c469db78f2ff5777e2, type: 3}
+  musicClip: {fileID: 8300000, guid: 2f2680500ed2ae84b994f1aaf45a436b, type: 3}
 --- !u!4 &115340896
 Transform:
   m_ObjectHideFlags: 0

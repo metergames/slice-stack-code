@@ -10,14 +10,16 @@ public class AudioManager : MonoBehaviour
     public AudioMixer mainMixer;
     public AudioMixerGroup sfxGroup;
     public AudioMixerGroup uiGroup;
-    public AudioMixerGroup musicGroup;
 
     [Header("Clips")]
     public AudioClip sliceClip;
     public AudioClip perfectClip;
     public AudioClip failClip;
     public AudioClip uiClickClip;
+
+    [Header("Music")]
     public AudioClip musicClip;
+    public AudioMixerGroup musicGroup;
 
     private AudioSource sfxSource;
     private AudioSource uiSource;
@@ -40,6 +42,7 @@ public class AudioManager : MonoBehaviour
         musicSource.clip = musicClip;
         musicSource.loop = true;
         musicSource.playOnAwake = false;
+        musicSource.volume = 0f;
     }
 
     public void PlaySFX(AudioClip clip)
@@ -55,13 +58,10 @@ public class AudioManager : MonoBehaviour
     public void PlayMusic(float fadeInTime = 1f)
     {
         musicSource.Play();
-        FadeMixerGroup("MusicVolume", 0f, fadeInTime);
+        musicSource.DOFade(1f, fadeInTime);
     }
 
-    public void StopMusic(float fadeOutTime = 1f)
-    {
-        FadeMixerGroup("MusicVolume", -80f, fadeOutTime, () => musicSource.Stop());
-    }
+    public 
 
     // Toggle logic
     public void SetSFXEnabled(bool enabled)
@@ -72,24 +72,5 @@ public class AudioManager : MonoBehaviour
     public void SetUIEnabled(bool enabled)
     {
         mainMixer.SetFloat("UIVolume", enabled ? 0f : -80f);
-    }
-
-    public void SetMusicEnabled(bool enabled)
-    {
-        mainMixer.SetFloat("MusicVolume", enabled ? 0f : -80f);
-    }
-
-    private void FadeMixerGroup(string exposedParam, float targetVolumeDb, float duration, System.Action onComplete = null)
-    {
-        float currentValue;
-        mainMixer.GetFloat(exposedParam, out currentValue);
-
-        DOTween.To(() => currentValue, x =>
-        {
-            currentValue = x;
-            mainMixer.SetFloat(exposedParam, currentValue);
-        }, targetVolumeDb, duration)
-        .SetEase(Ease.InOutSine)
-        .OnComplete(() => onComplete?.Invoke());
     }
 }

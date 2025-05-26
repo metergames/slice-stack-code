@@ -35,8 +35,6 @@ public class StackManager : MonoBehaviour
 
     private void Start()
     {
-        audioManager.PlayMusic();
-
         int savedTopScore = PlayerPrefs.GetInt("TopScore", 0);
         uiManager.SetTopScore(savedTopScore);
         uiManager.ShowStartUI();
