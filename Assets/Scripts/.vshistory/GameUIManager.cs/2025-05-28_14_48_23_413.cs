@@ -44,7 +44,11 @@ public class GameUIManager : MonoBehaviour
 
         CanvasGroup group = settingsButton.GetComponent<CanvasGroup>();
         if (group != null)
+        {
             group.alpha = 1f;
+            group.interactable = true;
+            group.blocksRaycasts = true;
+        }
 
         scoreText.text = topScore.ToString();
     }

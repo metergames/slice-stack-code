@@ -77,9 +77,6 @@ public class AudioManager : MonoBehaviour
     public void SetMusicEnabled(bool enabled)
     {
         mainMixer.SetFloat("MusicVolume", enabled ? 0f : -80f);
-
-        if (!musicSource.isPlaying && enabled)
-            PlayMusic();
     }
 
     private void FadeMixerGroup(string exposedParam, float targetVolumeDb, float duration, System.Action onComplete = null)

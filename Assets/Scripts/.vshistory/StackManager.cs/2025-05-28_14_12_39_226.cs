@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class StackManager : MonoBehaviour
 {
@@ -36,6 +38,8 @@ public class StackManager : MonoBehaviour
 
     private void Start()
     {
+        audioManager.PlayMusic();
+
         int savedTopScore = PlayerPrefs.GetInt("TopScore", 0);
         uiManager.SetTopScore(savedTopScore);
         uiManager.ShowStartUI();
@@ -46,14 +50,11 @@ public class StackManager : MonoBehaviour
 
         SpawnFirstBlock();
         //SpawnNextBlock();
-
-        if (SettingsManager.IsMusicEnabled())
-            audioManager.PlayMusic();
     }
 
     private void Update()
     {
-        if (UIUtils.IsPointerOverUIButton())
+        if (IsPointerOverUIButton())
             return;
 
         if (!gameStarted && !blockIsDropping && !settingsManager.IsSettingsOpen() && Input.GetMouseButtonDown(0))
@@ -179,7 +180,6 @@ public class StackManager : MonoBehaviour
             DropBlock(currentBlock, targetY, () =>
             {
                 audioManager.PlaySFX(audioManager.perfectClip);
-                VibratePerfect();
                 stackBlocks.Add(currentBlock.gameObject);
                 SpawnNextBlock();
                 blockIsDropping = false;
@@ -300,8 +300,6 @@ public class StackManager : MonoBehaviour
 
         audioManager.PlaySFX(audioManager.failClip);
 
-        VibrateGameOver();
-
         DOTween.Kill(cameraFollowTarget);
 
         Vector3 camPos = cameraFollowTarget.position;
@@ -404,21 +402,23 @@ public class StackManager : MonoBehaviour
         fx.GetComponent<PerfectEffect>().Play(block.localScale);
     }
 
-    public static void VibratePerfect()
+    bool IsPointerOverUIButton()
     {
-        if (SettingsManager.IsVibrationEnabled())
-            VibrationManager.Vibrate(40, 70);
-    }
+        if (Input.touchCount > 0)
+        {
+            PointerEventData pointerData = new PointerEventData(EventSystem.current);
+            pointerData.position = Input.GetTouch(0).position;
 
-    public static void VibrateGameOver()
-    {
-        if (SettingsManager.IsVibrationEnabled())
-            VibrationManager.Vibrate(200, 125);
-    }
+            var raycastResults = new System.Collections.Generic.List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerData, raycastResults);
 
-    public static void VibrateClick()
-    {
-        if (SettingsManager.IsVibrationEnabled())
-            VibrationManager.Vibrate(20, 50);
+            foreach (var result in raycastResults)
+            {
+                if (result.gameObject.GetComponent<Button>() != null)
+                    return true;
+            }
+        }
+
+        return false;
     }
 }

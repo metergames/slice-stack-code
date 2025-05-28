@@ -18,7 +18,6 @@ public class StackManager : MonoBehaviour
     public Material gradientMaterial;
     public GameObject perfectEffectPrefab;
     public AudioManager audioManager;
-    public SettingsManager settingsManager;
 
     private GameObject lastBlock;
     private BlockMover.Axis currentAxis = BlockMover.Axis.X;
@@ -36,6 +35,8 @@ public class StackManager : MonoBehaviour
 
     private void Start()
     {
+        audioManager.PlayMusic();
+
         int savedTopScore = PlayerPrefs.GetInt("TopScore", 0);
         uiManager.SetTopScore(savedTopScore);
         uiManager.ShowStartUI();
@@ -46,17 +47,11 @@ public class StackManager : MonoBehaviour
 
         SpawnFirstBlock();
         //SpawnNextBlock();
-
-        if (SettingsManager.IsMusicEnabled())
-            audioManager.PlayMusic();
     }
 
     private void Update()
     {
-        if (UIUtils.IsPointerOverUIButton())
-            return;
-
-        if (!gameStarted && !blockIsDropping && !settingsManager.IsSettingsOpen() && Input.GetMouseButtonDown(0))
+        if (!gameStarted && !blockIsDropping && Input.GetMouseButtonDown(0))
         {
             gameStarted = true;
             score = 0;
@@ -179,7 +174,6 @@ public class StackManager : MonoBehaviour
             DropBlock(currentBlock, targetY, () =>
             {
                 audioManager.PlaySFX(audioManager.perfectClip);
-                VibratePerfect();
                 stackBlocks.Add(currentBlock.gameObject);
                 SpawnNextBlock();
                 blockIsDropping = false;
@@ -300,8 +294,6 @@ public class StackManager : MonoBehaviour
 
         audioManager.PlaySFX(audioManager.failClip);
 
-        VibrateGameOver();
-
         DOTween.Kill(cameraFollowTarget);
 
         Vector3 camPos = cameraFollowTarget.position;
@@ -402,23 +394,5 @@ public class StackManager : MonoBehaviour
 
         GameObject fx = Instantiate(perfectEffectPrefab, spawnPos, Quaternion.Euler(0f, 0f, 0f)); // Rotate so plane faces up
         fx.GetComponent<PerfectEffect>().Play(block.localScale);
-    }
-
-    public static void VibratePerfect()
-    {
-        if (SettingsManager.IsVibrationEnabled())
-            VibrationManager.Vibrate(40, 70);
-    }
-
-    public static void VibrateGameOver()
-    {
-        if (SettingsManager.IsVibrationEnabled())
-            VibrationManager.Vibrate(200, 125);
-    }
-
-    public static void VibrateClick()
-    {
-        if (SettingsManager.IsVibrationEnabled())
-            VibrationManager.Vibrate(20, 50);
     }
 }

@@ -21,7 +21,7 @@ public class GameUIManager : MonoBehaviour
     public Material orbitronMaterial;
 
     [Header("Others")]
-    public RectTransform settingsButton;
+    public GameObject settingsButton;
 
     private int topScore = 0;
 
@@ -30,21 +30,16 @@ public class GameUIManager : MonoBehaviour
         titleText.gameObject.SetActive(true);
         topScoreText.gameObject.SetActive(true);
         tapToStartText.gameObject.SetActive(true);
-        settingsButton.gameObject.SetActive(true);
+        settingsButton.SetActive(true);
 
         // Reset anchored positions (based on your original layout)
         titleText.rectTransform.anchoredPosition = new Vector2(0, -225f);
         topScoreText.rectTransform.anchoredPosition = new Vector2(0, -415f);
         tapToStartText.rectTransform.anchoredPosition = new Vector2(0, 450f);
-        settingsButton.anchoredPosition = new Vector2(0, 235f);
 
         titleText.alpha = 1f;
         topScoreText.alpha = 1f;
         tapToStartText.alpha = 1f;
-
-        CanvasGroup group = settingsButton.GetComponent<CanvasGroup>();
-        if (group != null)
-            group.alpha = 1f;
 
         scoreText.text = topScore.ToString();
     }
@@ -54,7 +49,7 @@ public class GameUIManager : MonoBehaviour
         titleText.gameObject.SetActive(false);
         topScoreText.gameObject.SetActive(false);
         tapToStartText.gameObject.SetActive(false);
-        settingsButton.gameObject.SetActive(false);
+        settingsButton.SetActive(false);
     }
 
     public void SetTopScore(int score)
@@ -96,18 +91,11 @@ public class GameUIManager : MonoBehaviour
         seq.Join(tapToStartText.rectTransform.DOLocalMoveY(tapToStartText.rectTransform.localPosition.y + 100f, duration));
         seq.Join(tapToStartText.DOFade(0f, duration));
 
-        // Settings button
-        seq.Join(settingsButton.DOLocalMoveY(settingsButton.localPosition.y + 100f, duration));
-        CanvasGroup settingsGroup = settingsButton.GetComponent<CanvasGroup>();
-        if (settingsGroup != null)
-            seq.Join(settingsGroup.DOFade(0f, duration));
-
         seq.OnComplete(() =>
         {
             titleText.gameObject.SetActive(false);
             topScoreText.gameObject.SetActive(false);
             tapToStartText.gameObject.SetActive(false);
-            settingsButton.gameObject.SetActive(false);
             onComplete?.Invoke();
         });
     }

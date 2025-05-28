@@ -36,6 +36,8 @@ public class StackManager : MonoBehaviour
 
     private void Start()
     {
+        audioManager.PlayMusic();
+
         int savedTopScore = PlayerPrefs.GetInt("TopScore", 0);
         uiManager.SetTopScore(savedTopScore);
         uiManager.ShowStartUI();
@@ -46,9 +48,6 @@ public class StackManager : MonoBehaviour
 
         SpawnFirstBlock();
         //SpawnNextBlock();
-
-        if (SettingsManager.IsMusicEnabled())
-            audioManager.PlayMusic();
     }
 
     private void Update()
@@ -413,7 +412,7 @@ public class StackManager : MonoBehaviour
     public static void VibrateGameOver()
     {
         if (SettingsManager.IsVibrationEnabled())
-            VibrationManager.Vibrate(200, 125);
+            VibrationManager.Vibrate(200, 150);
     }
 
     public static void VibrateClick()

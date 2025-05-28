@@ -36,11 +36,15 @@ public class StackManager : MonoBehaviour
 
     private void Start()
     {
+        uiManager.AnimateFontSoftness(1f, 0f, 0.5f);
+
+
         int savedTopScore = PlayerPrefs.GetInt("TopScore", 0);
         uiManager.SetTopScore(savedTopScore);
         uiManager.ShowStartUI();
 
         initialOrthoSize = cineCam.Lens.OrthographicSize;
+        uiManager.FadeFromBlack();
 
         hue = Random.Range(0f, 360f);
 

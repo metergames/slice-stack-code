@@ -78,7 +78,7 @@ public class AudioManager : MonoBehaviour
     {
         mainMixer.SetFloat("MusicVolume", enabled ? 0f : -80f);
 
-        if (!musicSource.isPlaying && enabled)
+        if (!musicSource.isPlaying)
             PlayMusic();
     }
 

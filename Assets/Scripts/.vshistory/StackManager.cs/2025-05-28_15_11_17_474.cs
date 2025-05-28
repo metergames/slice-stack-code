@@ -36,6 +36,8 @@ public class StackManager : MonoBehaviour
 
     private void Start()
     {
+        audioManager.PlayMusic();
+
         int savedTopScore = PlayerPrefs.GetInt("TopScore", 0);
         uiManager.SetTopScore(savedTopScore);
         uiManager.ShowStartUI();
@@ -46,9 +48,6 @@ public class StackManager : MonoBehaviour
 
         SpawnFirstBlock();
         //SpawnNextBlock();
-
-        if (SettingsManager.IsMusicEnabled())
-            audioManager.PlayMusic();
     }
 
     private void Update()
@@ -163,6 +162,8 @@ public class StackManager : MonoBehaviour
         // Perfect stack forgiveness
         if (Mathf.Abs(delta) <= perfectStackThreshold)
         {
+            VibratePerfect();
+
             // Snap to perfect alignment
             Vector3 perfectPos = previousBlock.position;
             perfectPos.y = currentBlock.position.y;
@@ -179,7 +180,6 @@ public class StackManager : MonoBehaviour
             DropBlock(currentBlock, targetY, () =>
             {
                 audioManager.PlaySFX(audioManager.perfectClip);
-                VibratePerfect();
                 stackBlocks.Add(currentBlock.gameObject);
                 SpawnNextBlock();
                 blockIsDropping = false;
@@ -404,21 +404,7 @@ public class StackManager : MonoBehaviour
         fx.GetComponent<PerfectEffect>().Play(block.localScale);
     }
 
-    public static void VibratePerfect()
-    {
-        if (SettingsManager.IsVibrationEnabled())
-            VibrationManager.Vibrate(40, 70);
-    }
-
-    public static void VibrateGameOver()
-    {
-        if (SettingsManager.IsVibrationEnabled())
-            VibrationManager.Vibrate(200, 125);
-    }
-
-    public static void VibrateClick()
-    {
-        if (SettingsManager.IsVibrationEnabled())
-            VibrationManager.Vibrate(20, 50);
-    }
+    public static void VibratePerfect() => VibrationManager.Vibrate(40, 100);
+    public static void VibrateGameOver() => VibrationManager.Vibrate(200, 255);
+    public static void VibrateClick() => VibrationManager.Vibrate(20, 50);
 }

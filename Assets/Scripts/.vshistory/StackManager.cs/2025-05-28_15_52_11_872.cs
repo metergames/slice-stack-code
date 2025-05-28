@@ -36,6 +36,10 @@ public class StackManager : MonoBehaviour
 
     private void Start()
     {
+        uiManager.AnimateFontSoftness(1f, 0f, 0.5f);
+
+        uiManager.FadeFromBlack();
+
         int savedTopScore = PlayerPrefs.GetInt("TopScore", 0);
         uiManager.SetTopScore(savedTopScore);
         uiManager.ShowStartUI();

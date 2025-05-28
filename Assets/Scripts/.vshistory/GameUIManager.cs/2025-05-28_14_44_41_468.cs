@@ -36,15 +36,10 @@ public class GameUIManager : MonoBehaviour
         titleText.rectTransform.anchoredPosition = new Vector2(0, -225f);
         topScoreText.rectTransform.anchoredPosition = new Vector2(0, -415f);
         tapToStartText.rectTransform.anchoredPosition = new Vector2(0, 450f);
-        settingsButton.anchoredPosition = new Vector2(0, 235f);
 
         titleText.alpha = 1f;
         topScoreText.alpha = 1f;
         tapToStartText.alpha = 1f;
-
-        CanvasGroup group = settingsButton.GetComponent<CanvasGroup>();
-        if (group != null)
-            group.alpha = 1f;
 
         scoreText.text = topScore.ToString();
     }
@@ -97,10 +92,7 @@ public class GameUIManager : MonoBehaviour
         seq.Join(tapToStartText.DOFade(0f, duration));
 
         // Settings button
-        seq.Join(settingsButton.DOLocalMoveY(settingsButton.localPosition.y + 100f, duration));
-        CanvasGroup settingsGroup = settingsButton.GetComponent<CanvasGroup>();
-        if (settingsGroup != null)
-            seq.Join(settingsGroup.DOFade(0f, duration));
+        
 
         seq.OnComplete(() =>
         {

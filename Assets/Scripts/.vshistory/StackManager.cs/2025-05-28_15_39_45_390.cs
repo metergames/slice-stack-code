@@ -47,8 +47,7 @@ public class StackManager : MonoBehaviour
         SpawnFirstBlock();
         //SpawnNextBlock();
 
-        if (SettingsManager.IsMusicEnabled())
-            audioManager.PlayMusic();
+        audioManager.PlayMusic();
     }
 
     private void Update()
