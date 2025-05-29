@@ -28,7 +28,6 @@ public class StackManager : MonoBehaviour
     private bool gameStarted = false;
     private float initialOrthoSize;
     private bool blockIsDropping = false;
-    private int perfectStreak = 0;
 
     // Colors
     private float hue = 0f;
@@ -63,7 +62,6 @@ public class StackManager : MonoBehaviour
             score = 0;
             uiManager.AnimateStartUIOut();
             uiManager.AnimateScoreIn();
-            uiManager.AnimateCoinsIn();
             uiManager.UpdateScore(score);
 
             audioManager.PlayUISound();
@@ -174,9 +172,6 @@ public class StackManager : MonoBehaviour
             float previousHeight = previousBlock.localScale.y;
             float targetY = previousBlock.position.y + (previousHeight / 2f) + (currentHeight / 2f);
 
-            perfectStreak++;
-            CurrencyManager.Instance.AddCoins(perfectStreak >= 3 ? 3 : 1);
-
             score++;
             uiManager.UpdateScore(score);
             uiManager.AnimateScorePopup(true);
@@ -199,9 +194,6 @@ public class StackManager : MonoBehaviour
         float prevHeight = previousBlock.localScale.y;
 
         float finalY = previousBlock.position.y + (prevHeight / 2f) + (currHeight / 2f);
-
-        perfectStreak = 0;
-        CurrencyManager.Instance.AddCoins(1);
 
         score++;
         uiManager.UpdateScore(score);
@@ -381,12 +373,8 @@ public class StackManager : MonoBehaviour
             cineCam.Lens.OrthographicSize = initialOrthoSize;
 
             // Reset score label position
-            RectTransform rtScore = uiManager.scoreText.rectTransform;
-            rtScore.anchoredPosition = new Vector2(0, -565); // Default position
-
-            // Reset coins label position
-            RectTransform rtCoins = uiManager.coinsText.rectTransform;
-            rtCoins.anchoredPosition = new Vector2(345, -700); // Default position
+            RectTransform rt = uiManager.scoreText.rectTransform;
+            rt.anchoredPosition = new Vector2(0, -565); // Default position
 
             blockIsDropping = false;
 

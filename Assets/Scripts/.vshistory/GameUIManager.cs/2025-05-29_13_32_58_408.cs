@@ -254,6 +254,6 @@ public class GameUIManager : MonoBehaviour
         // Animate pop
         coinsRect.DOKill(); // Cancel any running tweens
         coinsRect.localScale = Vector3.one;
-        coinsRect.DOPunchScale(Vector3.one * 0.15f, 0.3f, 8, 1f).SetEase(Ease.OutQuad);
+        coinsRect.DOPunchScale(Vector3.one * 0.3f, 0.3f, 5, 0.7f).SetEase(Ease.OutBack);
     }
 }

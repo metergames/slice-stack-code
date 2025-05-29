@@ -384,9 +384,9 @@ public class StackManager : MonoBehaviour
             RectTransform rtScore = uiManager.scoreText.rectTransform;
             rtScore.anchoredPosition = new Vector2(0, -565); // Default position
 
-            // Reset coins label position
+            // Reset score label position
             RectTransform rtCoins = uiManager.coinsText.rectTransform;
-            rtCoins.anchoredPosition = new Vector2(345, -700); // Default position
+            rtCoins.anchoredPosition = new Vector2(0, -565); // Default position
 
             blockIsDropping = false;
 

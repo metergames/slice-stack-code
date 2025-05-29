@@ -23,14 +23,8 @@ public class GameUIManager : MonoBehaviour
 
     [Header("Others")]
     public RectTransform settingsButton;
-    private RectTransform coinsRect;
 
     private int topScore = 0;
-
-    private void Awake()
-    {
-        coinsRect = coinsText.GetComponent<RectTransform>();
-    }
 
     public void ShowStartUI()
     {
@@ -245,15 +239,5 @@ public class GameUIManager : MonoBehaviour
             rt.DOScale(1.2f, 0.1f).SetEase(Ease.OutBack)
               .OnComplete(() => rt.DOScale(1f, 0.2f).SetEase(Ease.OutCubic));
         }
-    }
-
-    public void UpdateCoins(int newAmount)
-    {
-        coinsText.text = newAmount.ToString();
-
-        // Animate pop
-        coinsRect.DOKill(); // Cancel any running tweens
-        coinsRect.localScale = Vector3.one;
-        coinsRect.DOPunchScale(Vector3.one * 0.15f, 0.3f, 8, 1f).SetEase(Ease.OutQuad);
     }
 }

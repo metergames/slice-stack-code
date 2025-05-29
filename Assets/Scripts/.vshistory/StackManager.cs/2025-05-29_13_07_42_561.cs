@@ -63,7 +63,6 @@ public class StackManager : MonoBehaviour
             score = 0;
             uiManager.AnimateStartUIOut();
             uiManager.AnimateScoreIn();
-            uiManager.AnimateCoinsIn();
             uiManager.UpdateScore(score);
 
             audioManager.PlayUISound();
@@ -381,12 +380,8 @@ public class StackManager : MonoBehaviour
             cineCam.Lens.OrthographicSize = initialOrthoSize;
 
             // Reset score label position
-            RectTransform rtScore = uiManager.scoreText.rectTransform;
-            rtScore.anchoredPosition = new Vector2(0, -565); // Default position
-
-            // Reset coins label position
-            RectTransform rtCoins = uiManager.coinsText.rectTransform;
-            rtCoins.anchoredPosition = new Vector2(345, -700); // Default position
+            RectTransform rt = uiManager.scoreText.rectTransform;
+            rt.anchoredPosition = new Vector2(0, -565); // Default position
 
             blockIsDropping = false;
 
