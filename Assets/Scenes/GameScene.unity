@@ -1594,6 +1594,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1816563417}
     m_Modifications:
+    - target: {fileID: 602548030073697893, guid: 9c8b26dacde01e94f8246f912548fcaf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4386675472943856880, guid: 9c8b26dacde01e94f8246f912548fcaf, type: 3}
       propertyPath: m_fontSize
       value: 32.65
@@ -3851,7 +3855,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -189.99998, y: -515}
+  m_AnchoredPosition: {x: -190, y: -515}
   m_SizeDelta: {x: -780, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1174611800
@@ -5181,7 +5185,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -189.99998, y: -348}
+  m_AnchoredPosition: {x: -190, y: -348}
   m_SizeDelta: {x: -780, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1809115913

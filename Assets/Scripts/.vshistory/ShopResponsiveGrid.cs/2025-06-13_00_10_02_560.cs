@@ -16,10 +16,13 @@ public class ShopResponsiveGrid : MonoBehaviour
         float width = rectTransform.rect.width;
         float totalWidthMinusFixed = width - 30f; // Remove 30 for equal and correct placement
 
-        // 4x is spacing, 19x is cellSize (almost 1:5)
-        float baseUnit = totalWidthMinusFixed / 65f;
-        float spacing = 4f * baseUnit;
-        float cellSize = 19f * baseUnit;
+        float s = totalWidthMinusFixed / 31f; // Calculate the base unit 's'
+        float spacing = 2f * s; // Spacing is 2 times 's'
+        float cellSize = 9f * s; // CellSize is 9 times 's'
+
+        // x is spacing, 4x is cellSize
+        //float spacing = totalWidthMinusFixed / 14f;
+        //float cellSize = 4f * spacing;
 
         gridLayoutGroup.cellSize = new Vector2(cellSize, cellSize);
         gridLayoutGroup.spacing = new Vector2(spacing, spacing);
