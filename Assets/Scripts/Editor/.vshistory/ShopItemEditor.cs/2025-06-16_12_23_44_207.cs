@@ -11,7 +11,7 @@ public class ShopItemEditor : Editor
     private SerializedProperty titleProp;
     private SerializedProperty ownedCountProp;
     private SerializedProperty skinMaterialProp;
-    private SerializedProperty backgroundMaterialProp;
+    private SerializedProperty backgroundImageProp;
     private SerializedProperty audioClipProp;
     private SerializedProperty purchaseTypeProp;
     private SerializedProperty costProp;
@@ -28,7 +28,7 @@ public class ShopItemEditor : Editor
         titleProp = serializedObject.FindProperty("title");
         ownedCountProp = serializedObject.FindProperty("ownedCount");
         skinMaterialProp = serializedObject.FindProperty("skinMaterial");
-        backgroundMaterialProp = serializedObject.FindProperty("backgroundMaterial");
+        backgroundImageProp = serializedObject.FindProperty("backgroundImage");
         audioClipProp = serializedObject.FindProperty("audioClip");
         purchaseTypeProp = serializedObject.FindProperty("purchaseType");
         costProp = serializedObject.FindProperty("cost");
@@ -74,10 +74,10 @@ public class ShopItemEditor : Editor
             EditorGUILayout.PropertyField(skinMaterialProp, new GUIContent("Skin Material (Skin Item)"));
         }
 
-        // Conditional display for 'backgroundMaterial' if category == Backgrounds
+        // Conditional display for 'backgroundImage' if category == Backgrounds
         if (currentCategory == ShopCategory.Backgrounds)
         {
-            EditorGUILayout.PropertyField(backgroundMaterialProp, new GUIContent("Background Material (Background Item)"));
+            EditorGUILayout.PropertyField(backgroundImageProp, new GUIContent("Background Image (Background Item)"));
         }
 
         EditorGUILayout.Space();

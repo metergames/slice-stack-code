@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0a58e3eca88fec4899ee87228ea83e6, type: 3}
-  m_Name: 01 Pattern Skin
+  m_Name: 05 Pattern Skin
   m_EditorClassIdentifier: 
-  id: SKIN_PATT_01
+  id: SKIN_PATT_05
   category: 0
-  icon: {fileID: 21300000, guid: ee1e8ceac76843544b497df3c3ef3984, type: 3}
+  icon: {fileID: 21300000, guid: 406152986bc9dff4ea1349efc726100b, type: 3}
   title: 
   ownedCount: 0
-  skinMaterial: {fileID: 2100000, guid: ed73d0c6041da6d4aa503e7ba2527a65, type: 2}
+  skinMaterial: {fileID: 2100000, guid: 2fd1da7018d8eb24bb0b6fe677e34927, type: 2}
   backgroundImage: {fileID: 0}
   audioClip: {fileID: 0}
   purchaseType: 0

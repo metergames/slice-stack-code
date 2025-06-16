@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0a58e3eca88fec4899ee87228ea83e6, type: 3}
-  m_Name: 01 Pattern Skin
+  m_Name: 00 Gradient Bkg
   m_EditorClassIdentifier: 
-  id: SKIN_PATT_01
-  category: 0
-  icon: {fileID: 21300000, guid: ee1e8ceac76843544b497df3c3ef3984, type: 3}
+  id: BKG_GRADIENT_00
+  category: 1
+  icon: {fileID: 21300000, guid: 8e6aa806157af3a4f8c1cc8d851a693d, type: 3}
   title: 
   ownedCount: 0
-  skinMaterial: {fileID: 2100000, guid: ed73d0c6041da6d4aa503e7ba2527a65, type: 2}
-  backgroundImage: {fileID: 0}
+  skinMaterial: {fileID: 0}
+  backgroundMaterial: {fileID: 2100000, guid: d07f3db0cc00a0248928e1ad362c45fe, type: 2}
   audioClip: {fileID: 0}
   purchaseType: 0
-  cost: 150
-  owned: 0
+  cost: 0
+  owned: 1
   selected: 0
-  confirmName: this skin
+  confirmName: this background
