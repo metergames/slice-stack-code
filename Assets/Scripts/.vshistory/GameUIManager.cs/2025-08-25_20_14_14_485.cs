@@ -23,7 +23,6 @@ public class GameUIManager : MonoBehaviour
 
     [Header("Others")]
     public RectTransform settingsButton;
-    public RectTransform shoppingCartButton;
     private RectTransform coinsRect;
 
     private int topScore = 0;
@@ -39,26 +38,20 @@ public class GameUIManager : MonoBehaviour
         topScoreText.gameObject.SetActive(true);
         tapToStartText.gameObject.SetActive(true);
         settingsButton.gameObject.SetActive(true);
-        shoppingCartButton.gameObject.SetActive(true);
 
         // Reset anchored positions (based on your original layout)
         titleText.rectTransform.anchoredPosition = new Vector2(0, -225f);
         topScoreText.rectTransform.anchoredPosition = new Vector2(0, -415f);
         tapToStartText.rectTransform.anchoredPosition = new Vector2(0, 450f);
-        settingsButton.anchoredPosition = new Vector2(125f, 235f);
-        shoppingCartButton.anchoredPosition = new Vector2(-125f, 235f);
+        settingsButton.anchoredPosition = new Vector2(0, 235f);
 
         titleText.alpha = 1f;
         topScoreText.alpha = 1f;
         tapToStartText.alpha = 1f;
 
-        CanvasGroup settingsButtonGroup = settingsButton.GetComponent<CanvasGroup>();
-        if (settingsButtonGroup != null)
-            settingsButtonGroup.alpha = 1f;
-
-        CanvasGroup shoppingCartButtonGroup = shoppingCartButton.GetComponent<CanvasGroup>();
-        if (shoppingCartButtonGroup != null)
-            shoppingCartButtonGroup.alpha = 1f;
+        CanvasGroup group = settingsButton.GetComponent<CanvasGroup>();
+        if (group != null)
+            group.alpha = 1f;
 
         scoreText.text = topScore.ToString();
     }
@@ -69,7 +62,6 @@ public class GameUIManager : MonoBehaviour
         topScoreText.gameObject.SetActive(false);
         tapToStartText.gameObject.SetActive(false);
         settingsButton.gameObject.SetActive(false);
-        shoppingCartButton.gameObject.SetActive(false);
     }
 
     public void SetTopScore(int score)
@@ -117,19 +109,12 @@ public class GameUIManager : MonoBehaviour
         if (settingsGroup != null)
             seq.Join(settingsGroup.DOFade(0f, duration));
 
-        // Shopping cart button
-        seq.Join(shoppingCartButton.DOLocalMoveY(shoppingCartButton.localPosition.y + 100f, duration));
-        CanvasGroup shoppingCartGroup = shoppingCartButton.GetComponent<CanvasGroup>();
-        if (shoppingCartGroup != null)
-            seq.Join(shoppingCartGroup.DOFade(0f, duration));
-
         seq.OnComplete(() =>
         {
             titleText.gameObject.SetActive(false);
             topScoreText.gameObject.SetActive(false);
             tapToStartText.gameObject.SetActive(false);
             settingsButton.gameObject.SetActive(false);
-            shoppingCartButton.gameObject.SetActive(false);
             onComplete?.Invoke();
         });
     }

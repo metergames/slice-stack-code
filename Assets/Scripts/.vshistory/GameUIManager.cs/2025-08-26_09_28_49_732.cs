@@ -52,13 +52,9 @@ public class GameUIManager : MonoBehaviour
         topScoreText.alpha = 1f;
         tapToStartText.alpha = 1f;
 
-        CanvasGroup settingsButtonGroup = settingsButton.GetComponent<CanvasGroup>();
-        if (settingsButtonGroup != null)
-            settingsButtonGroup.alpha = 1f;
-
-        CanvasGroup shoppingCartButtonGroup = shoppingCartButton.GetComponent<CanvasGroup>();
-        if (shoppingCartButtonGroup != null)
-            shoppingCartButtonGroup.alpha = 1f;
+        CanvasGroup group = settingsButton.GetComponent<CanvasGroup>();
+        if (group != null)
+            group.alpha = 1f;
 
         scoreText.text = topScore.ToString();
     }
@@ -69,7 +65,6 @@ public class GameUIManager : MonoBehaviour
         topScoreText.gameObject.SetActive(false);
         tapToStartText.gameObject.SetActive(false);
         settingsButton.gameObject.SetActive(false);
-        shoppingCartButton.gameObject.SetActive(false);
     }
 
     public void SetTopScore(int score)
@@ -117,19 +112,12 @@ public class GameUIManager : MonoBehaviour
         if (settingsGroup != null)
             seq.Join(settingsGroup.DOFade(0f, duration));
 
-        // Shopping cart button
-        seq.Join(shoppingCartButton.DOLocalMoveY(shoppingCartButton.localPosition.y + 100f, duration));
-        CanvasGroup shoppingCartGroup = shoppingCartButton.GetComponent<CanvasGroup>();
-        if (shoppingCartGroup != null)
-            seq.Join(shoppingCartGroup.DOFade(0f, duration));
-
         seq.OnComplete(() =>
         {
             titleText.gameObject.SetActive(false);
             topScoreText.gameObject.SetActive(false);
             tapToStartText.gameObject.SetActive(false);
             settingsButton.gameObject.SetActive(false);
-            shoppingCartButton.gameObject.SetActive(false);
             onComplete?.Invoke();
         });
     }

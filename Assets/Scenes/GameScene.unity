@@ -3004,7 +3004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -179.99998, y: 100}
+  m_AnchoredPosition: {x: -180, y: 100}
   m_SizeDelta: {x: 0, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &920435737
@@ -3367,6 +3367,7 @@ MonoBehaviour:
   fredokaMaterial: {fileID: 871290023645333043, guid: 38bd54b9753c5cf4ba29f0dc98e70292, type: 2}
   orbitronMaterial: {fileID: 1254716419135124414, guid: 7455982a70d643c41a1cd1da28936bc2, type: 2}
   settingsButton: {fileID: 1969894602}
+  shoppingCartButton: {fileID: 1819251112}
 --- !u!4 &1028247429
 Transform:
   m_ObjectHideFlags: 0
