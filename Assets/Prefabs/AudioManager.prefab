@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5552182696782813532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3529418493109928999}
+  - component: {fileID: 6785837263821116457}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3529418493109928999
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5552182696782813532}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6785837263821116457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5552182696782813532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d528920e5c46d4085a769d625d3b98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainMixer: {fileID: 24100000, guid: bb697dacffe89e742b286745c4c432f4, type: 2}
+  sfxGroup: {fileID: -7841070426281443096, guid: bb697dacffe89e742b286745c4c432f4, type: 2}
+  uiGroup: {fileID: 6401286868652556871, guid: bb697dacffe89e742b286745c4c432f4, type: 2}
+  musicGroup: {fileID: -2924309054622602674, guid: bb697dacffe89e742b286745c4c432f4, type: 2}
+  sliceClip: {fileID: 8300000, guid: 5c30d75be5c4d044da77854ab632cf54, type: 3}
+  perfectClip: {fileID: 8300000, guid: 26c46ec6368d08e4ba400596115ad73f, type: 3}
+  failClip: {fileID: 8300000, guid: 02cedd2c1d8d33241992901e21d77d6a, type: 3}
+  uiClickClip: {fileID: 8300000, guid: 427d20eba813a7c469db78f2ff5777e2, type: 3}
+  musicClip: {fileID: 8300000, guid: 2f2680500ed2ae84b994f1aaf45a436b, type: 3}

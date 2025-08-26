@@ -23,5 +23,5 @@ MonoBehaviour:
   purchaseType: 0
   cost: 0
   owned: 1
-  selected: 0
+  selected: 1
   confirmName: this background

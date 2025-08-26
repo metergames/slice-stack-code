@@ -1,0 +1,116 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ShopManager : MonoBehaviour
+{
+    public static ShopManager Instance;
+
+    [Header("UI")]
+    public Transform contentParent;
+    public GameObject shopItemPrefab;
+    public Button skinsTab, backgroundsTab, musicTab, extrasTab;
+
+    [Header("Tab Colors")]
+    public Color selectedColor = new Color(0.12f, 0.69f, 0.36f);  // #1FB05B
+    public Color unselectedColor = new Color(0.67f, 0.67f, 0.67f); // #AAAAAA
+    public Color selectedTextColor = Color.white;                 // #FFFFFF
+    public Color unselectedTextColor = new Color(0.196f, 0.196f, 0.196f); // #323232
+
+    [Header("Scene References")]
+    public GameObject stackBlockPrefab;  // assigned prefab
+    public Transform backgroundObject;   // background GameObject with material
+    public AudioSource audioManager;     // for switching music
+
+    [Header("Items")]
+    public List<ShopItem> allItems;
+
+    private ShopCategory currentCategory;
+    private List<ShopItemUI> spawnedItems = new List<ShopItemUI>();
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
+
+    private void Start()
+    {
+        skinsTab.onClick.AddListener(() => ChangeCategory(ShopCategory.Skins));
+        backgroundsTab.onClick.AddListener(() => ChangeCategory(ShopCategory.Backgrounds));
+        musicTab.onClick.AddListener(() => ChangeCategory(ShopCategory.Music));
+        extrasTab.onClick.AddListener(() => ChangeCategory(ShopCategory.Extras));
+
+        ChangeCategory(ShopCategory.Skins);
+    }
+
+    private void ChangeCategory(ShopCategory category)
+    {
+        currentCategory = category;
+        UpdateTabVisuals();
+        RefreshItems();
+    }
+
+    private void UpdateTabVisuals()
+    {
+        var tabs = new[]
+        {
+            new { btn = skinsTab, cat = ShopCategory.Skins },
+            new { btn = backgroundsTab, cat = ShopCategory.Backgrounds },
+            new { btn = musicTab, cat = ShopCategory.Music },
+            new { btn = extrasTab, cat = ShopCategory.Extras }
+        };
+
+        foreach (var t in tabs)
+        {
+            Color bgColor = (currentCategory == t.cat) ? selectedColor : unselectedColor;
+            t.btn.GetComponent<Image>().color = bgColor;
+
+            var txt = t.btn.GetComponentInChildren<Text>();
+            if (txt != null)
+                txt.color = (currentCategory == t.cat) ? selectedTextColor : unselectedTextColor;
+        }
+    }
+
+    private void RefreshItems()
+    {
+        foreach (var child in spawnedItems)
+            Destroy(child.gameObject);
+        spawnedItems.Clear();
+
+        foreach (var item in allItems)
+            if (item.Category == currentCategory)
+            {
+                var go = Instantiate(shopItemPrefab, contentParent);
+                var ui = go.GetComponent<ShopItemUI>();
+                ui.Setup(item, this);
+                spawnedItems.Add(ui);
+            }
+    }
+
+    public void OnItemSelected(ShopItem item)
+    {
+        // Mark selected flag appropriately
+        foreach (var it in allItems)
+            it.SetSelected(it == item);
+
+        switch (item.Category)
+        {
+            case ShopCategory.Skins:
+                var block = Instantiate(stackBlockPrefab);
+                block.GetComponent<Renderer>().material = item.SkinMaterial;
+                break;
+
+            case ShopCategory.Backgrounds:
+                backgroundObject.GetComponent<Renderer>().material = item.BackgroundMaterial;
+                break;
+
+            case ShopCategory.Music:
+                audioManager.clip = item.AudioClip;
+                audioManager.Play();
+                break;
+        }
+
+        RefreshItems();
+    }
+}
