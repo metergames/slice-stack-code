@@ -41,17 +41,12 @@ public class ShopItemUI : MonoBehaviour
 
         countText.gameObject.SetActive(item.Category == ShopCategory.Extras);
         if (item.Category == ShopCategory.Extras)
-        {
-            lockIcon.SetActive(false);
-            darkFade.SetActive(false);
             countText.GetComponentInChildren<TextMeshProUGUI>().text = item.OwnedCount.ToString();
-        }
 
         itemButton.onClick.RemoveAllListeners();
         itemButton.onClick.AddListener(() =>
         {
             AudioManager.Instance.PlayUISound();
-            StackManager.VibrateClick();
             if (item.Owned)
                 manager.OnItemSelected(item);
             else
