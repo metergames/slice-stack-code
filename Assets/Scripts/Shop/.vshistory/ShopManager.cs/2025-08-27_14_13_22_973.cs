@@ -38,6 +38,7 @@ public class ShopManager : MonoBehaviour
 
     private void Start()
     {
+        PlayerPrefs.SetInt("Coins", 1500);
         foreach (var item in allItems)
             item.LoadState();
 

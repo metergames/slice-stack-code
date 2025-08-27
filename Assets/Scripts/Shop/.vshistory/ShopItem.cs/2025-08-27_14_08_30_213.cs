@@ -65,6 +65,7 @@ public class ShopItem : ScriptableObject
     public void LoadState()
     {
         owned = PlayerPrefs.GetInt(ID + "_Owned", owned ? 1 : 0) == 1;
+        Debug.Log(owned);
         selected = PlayerPrefs.GetInt(ID + "_Selected", selected ? 1 : 0) == 1;
         ownedCount = PlayerPrefs.GetInt(ID + "_OwnedCount", ownedCount);
     }

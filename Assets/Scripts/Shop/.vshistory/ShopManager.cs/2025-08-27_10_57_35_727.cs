@@ -38,9 +38,6 @@ public class ShopManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var item in allItems)
-            item.LoadState();
-
         skinsTab.onClick.AddListener(() => ChangeCategory(ShopCategory.Skins));
         backgroundsTab.onClick.AddListener(() => ChangeCategory(ShopCategory.Backgrounds));
         musicTab.onClick.AddListener(() => ChangeCategory(ShopCategory.Music));
@@ -98,10 +95,7 @@ public class ShopManager : MonoBehaviour
         // Mark selected flag appropriately
         foreach (var it in allItems)
             if (it.Category == item.Category)
-            {
                 it.SetSelected(it == item);
-                it.SaveState();
-            }
 
         switch (item.Category)
         {
@@ -137,9 +131,7 @@ public class ShopManager : MonoBehaviour
         {
             if (CurrencyManager.Instance.SpendCoins((int)item.Cost))
             {
-                item.SetOwned(true);
-                item.SaveState();
-                //item.GetType().GetField("owned", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(item, true);
+                item.GetType().GetField("owned", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(item, true);
                 CurrencyManager.Instance.uiManager.UpdateCoins(CurrencyManager.Instance.GetCoinCount());
                 ChangeCategory(currentCategory); // refresh display
                 Debug.Log($"Purchased: {item.ID}");

@@ -39,7 +39,9 @@ public class ShopManager : MonoBehaviour
     private void Start()
     {
         foreach (var item in allItems)
-            item.LoadState();
+        {
+
+        }
 
         skinsTab.onClick.AddListener(() => ChangeCategory(ShopCategory.Skins));
         backgroundsTab.onClick.AddListener(() => ChangeCategory(ShopCategory.Backgrounds));

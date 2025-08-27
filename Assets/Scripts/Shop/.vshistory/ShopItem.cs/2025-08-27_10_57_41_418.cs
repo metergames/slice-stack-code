@@ -61,19 +61,4 @@ public class ShopItem : ScriptableObject
     public void SetSelected(bool value) => selected = value;
     public void SetOwned(bool value) => owned = value;
     public void SetOwnedCount(int value) => ownedCount = value;
-
-    public void LoadState()
-    {
-        owned = PlayerPrefs.GetInt(ID + "_Owned", owned ? 1 : 0) == 1;
-        selected = PlayerPrefs.GetInt(ID + "_Selected", selected ? 1 : 0) == 1;
-        ownedCount = PlayerPrefs.GetInt(ID + "_OwnedCount", ownedCount);
-    }
-
-    public void SaveState()
-    {
-        PlayerPrefs.SetInt(ID + "_Owned", owned ? 1 : 0);
-        PlayerPrefs.SetInt(ID + "_Selected", selected ? 1 : 0);
-        PlayerPrefs.SetInt(ID + "_OwnedCount", ownedCount);
-        PlayerPrefs.Save();
-    }
 }
