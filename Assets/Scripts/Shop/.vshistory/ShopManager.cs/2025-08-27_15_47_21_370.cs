@@ -144,17 +144,17 @@ public class ShopManager : MonoBehaviour
                     Debug.Log("Not enough coins for extra.");
                 }
             }
-            else // Real money purchase
+            else
             {
                 switch (item.ID)
                 {
                     case "EXTRA_MULTIPLELIVES_01":
-                        // Trigger Unity IAP purchase
+                        // Here you’d normally trigger Unity IAP purchase
                         Debug.Log("Initiating IAP for 10 extra lives...");
 
                         // For testing, just grant instantly
-                        item.ReferenceItem.SetOwnedCount(item.ReferenceItem.OwnedCount + 10);
-                        item.ReferenceItem.SaveState();
+                        item.SetOwnedCount(item.OwnedCount + 10);
+                        item.SaveState();
                         ChangeCategory(currentCategory);
                         Debug.Log("Player received 10 extra lives!");
                         break;

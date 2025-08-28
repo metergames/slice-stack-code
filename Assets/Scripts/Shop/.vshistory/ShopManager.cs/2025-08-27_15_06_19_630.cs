@@ -127,50 +127,11 @@ public class ShopManager : MonoBehaviour
 
     public void AttemptPurchase(ShopItem item)
     {
-        if (item.Category == ShopCategory.Extras) // Extras
+        if (item.Category == ShopCategory.Extras)
         {
-            if (item.PurchaseWith == PurchaseType.Coins)
-            {
-                if (CurrencyManager.Instance.SpendCoins((int)item.Cost))
-                {
-                    item.SetOwnedCount(item.OwnedCount + 1);
-                    item.SaveState();
-                    CurrencyManager.Instance.uiManager.UpdateCoins(CurrencyManager.Instance.GetCoinCount());
-                    ChangeCategory(currentCategory); // refresh display
-                    Debug.Log($"Purchased extra: {item.ID}. New count: {item.OwnedCount}");
-                }
-                else
-                {
-                    Debug.Log("Not enough coins for extra.");
-                }
-            }
-            else // Real money purchase
-            {
-                switch (item.ID)
-                {
-                    case "EXTRA_MULTIPLELIVES_01":
-                        // Trigger Unity IAP purchase
-                        Debug.Log("Initiating IAP for 10 extra lives...");
 
-                        // For testing, just grant instantly
-                        item.ReferenceItem.SetOwnedCount(item.ReferenceItem.OwnedCount + 10);
-                        item.ReferenceItem.SaveState();
-                        ChangeCategory(currentCategory);
-                        Debug.Log("Player received 10 extra lives!");
-                        break;
-
-                    case "EXTRA_ADD1000COINS_06":
-                        CurrencyManager.Instance.AddCoins(1000);
-                        Debug.Log("Player purchased 1000 coins!");
-                        break;
-
-                    default:
-                        Debug.LogWarning($"Unhandled real money item: {item.ID}");
-                        break;
-                }
-            }
         }
-        else // Skins, Backgrounds, Music
+        else
         {
             if (item.Owned)
             {

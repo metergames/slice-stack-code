@@ -42,14 +42,14 @@ public class ShopItemUI : MonoBehaviour
         countText.gameObject.SetActive(false); // default hidden
         if (item.Category == ShopCategory.Extras)
         {
-            lockIcon.SetActive(false);
-            darkFade.SetActive(false);
-
             if (item.PurchaseWith == PurchaseType.Coins)
             {
                 // Show count for coin-purchased extras
                 countText.SetActive(true);
                 countText.GetComponentInChildren<TextMeshProUGUI>().text = item.OwnedCount.ToString();
+
+                lockIcon.SetActive(false);
+                darkFade.SetActive(false);
             }
             else if (item.PurchaseWith == PurchaseType.RealMoney)
             {

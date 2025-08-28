@@ -30,7 +30,6 @@ public class ShopItem : ScriptableObject
     [SerializeField] private Material skinMaterial; // Only used if category == Skins
     [SerializeField] private Material backgroundMaterial; // Only used if category == Backgrounds
     [SerializeField] private AudioClip audioClip; // Only used if category == Music
-    [SerializeField] private ShopItem referenceItem;
 
     // [Header("Purchase Settings")]
     [SerializeField] private PurchaseType purchaseType;
@@ -53,7 +52,6 @@ public class ShopItem : ScriptableObject
     public Material SkinMaterial => skinMaterial;
     public Material BackgroundMaterial => backgroundMaterial;
     public AudioClip AudioClip => audioClip;
-    public ShopItem ReferenceItem => referenceItem;
     public PurchaseType PurchaseWith => purchaseType;
     public float Cost => cost;
     public bool Owned => owned;

@@ -39,23 +39,12 @@ public class ShopItemUI : MonoBehaviour
         costText.gameObject.SetActive(!isOwned);
         selectedBorder.SetActive(isSelected);
 
-        countText.gameObject.SetActive(false); // default hidden
+        countText.gameObject.SetActive(item.Category == ShopCategory.Extras);
         if (item.Category == ShopCategory.Extras)
         {
             lockIcon.SetActive(false);
             darkFade.SetActive(false);
-
-            if (item.PurchaseWith == PurchaseType.Coins)
-            {
-                // Show count for coin-purchased extras
-                countText.SetActive(true);
-                countText.GetComponentInChildren<TextMeshProUGUI>().text = item.OwnedCount.ToString();
-            }
-            else if (item.PurchaseWith == PurchaseType.RealMoney)
-            {
-                // Real money extras should never show count
-                countText.SetActive(false);
-            }
+            countText.GetComponentInChildren<TextMeshProUGUI>().text = item.OwnedCount.ToString();
         }
 
         itemButton.onClick.RemoveAllListeners();

@@ -144,7 +144,6 @@ public class GameUIManager : MonoBehaviour
             tapToStartText.gameObject.SetActive(false);
             settingsButton.gameObject.SetActive(false);
             shoppingCartButton.gameObject.SetActive(false);
-            powerupsButton.gameObject.SetActive(false);
             onComplete?.Invoke();
         });
     }

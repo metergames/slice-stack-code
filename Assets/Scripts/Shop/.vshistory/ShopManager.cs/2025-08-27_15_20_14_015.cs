@@ -144,30 +144,9 @@ public class ShopManager : MonoBehaviour
                     Debug.Log("Not enough coins for extra.");
                 }
             }
-            else // Real money purchase
+            else
             {
-                switch (item.ID)
-                {
-                    case "EXTRA_MULTIPLELIVES_01":
-                        // Trigger Unity IAP purchase
-                        Debug.Log("Initiating IAP for 10 extra lives...");
-
-                        // For testing, just grant instantly
-                        item.ReferenceItem.SetOwnedCount(item.ReferenceItem.OwnedCount + 10);
-                        item.ReferenceItem.SaveState();
-                        ChangeCategory(currentCategory);
-                        Debug.Log("Player received 10 extra lives!");
-                        break;
-
-                    case "EXTRA_ADD1000COINS_06":
-                        CurrencyManager.Instance.AddCoins(1000);
-                        Debug.Log("Player purchased 1000 coins!");
-                        break;
-
-                    default:
-                        Debug.LogWarning($"Unhandled real money item: {item.ID}");
-                        break;
-                }
+                Debug.Log("Real money purchase for extras not implemented.");
             }
         }
         else // Skins, Backgrounds, Music

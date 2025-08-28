@@ -80,13 +80,6 @@ public class ShopItemEditor : Editor
             EditorGUILayout.PropertyField(backgroundMaterialProp, new GUIContent("Background Material (Background Item)"));
         }
 
-        // Reference item for real money purchases
-        if ((PurchaseType)purchaseTypeProp.enumValueIndex == PurchaseType.RealMoney)
-        {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("referenceItem"),
-                new GUIContent("Reference Item (Target for Real Money Purchases)"));
-        }
-
         EditorGUILayout.Space();
 
         // --- Purchase Settings Header & Fields ---

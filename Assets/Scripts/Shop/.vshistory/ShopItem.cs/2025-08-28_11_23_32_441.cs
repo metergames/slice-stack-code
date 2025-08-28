@@ -53,7 +53,6 @@ public class ShopItem : ScriptableObject
     public Material SkinMaterial => skinMaterial;
     public Material BackgroundMaterial => backgroundMaterial;
     public AudioClip AudioClip => audioClip;
-    public ShopItem ReferenceItem => referenceItem;
     public PurchaseType PurchaseWith => purchaseType;
     public float Cost => cost;
     public bool Owned => owned;

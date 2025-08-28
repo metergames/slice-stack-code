@@ -77,7 +77,6 @@ public class GameUIManager : MonoBehaviour
         tapToStartText.gameObject.SetActive(false);
         settingsButton.gameObject.SetActive(false);
         shoppingCartButton.gameObject.SetActive(false);
-        powerupsButton.gameObject.SetActive(false);
     }
 
     public void SetTopScore(int score)
@@ -131,12 +130,6 @@ public class GameUIManager : MonoBehaviour
         if (shoppingCartGroup != null)
             seq.Join(shoppingCartGroup.DOFade(0f, duration));
 
-        // Powerups button
-        seq.Join(powerupsButton.DOLocalMoveY(powerupsButton.localPosition.y + 100f, duration));
-        CanvasGroup powerupsGroup = powerupsButton.GetComponent<CanvasGroup>();
-        if (powerupsGroup != null)
-            seq.Join(powerupsGroup.DOFade(0f, duration));
-
         seq.OnComplete(() =>
         {
             titleText.gameObject.SetActive(false);
@@ -144,7 +137,6 @@ public class GameUIManager : MonoBehaviour
             tapToStartText.gameObject.SetActive(false);
             settingsButton.gameObject.SetActive(false);
             shoppingCartButton.gameObject.SetActive(false);
-            powerupsButton.gameObject.SetActive(false);
             onComplete?.Invoke();
         });
     }

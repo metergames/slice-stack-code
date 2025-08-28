@@ -22,6 +22,6 @@ MonoBehaviour:
   audioClip: {fileID: 0}
   purchaseType: 0
   cost: 150
-  owned: 0
+  owned: 1
   selected: 0
   confirmName: this skin

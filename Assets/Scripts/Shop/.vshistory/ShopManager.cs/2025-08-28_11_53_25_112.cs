@@ -144,7 +144,7 @@ public class ShopManager : MonoBehaviour
                     Debug.Log("Not enough coins for extra.");
                 }
             }
-            else // Real money purchase
+            else
             {
                 switch (item.ID)
                 {
@@ -154,6 +154,7 @@ public class ShopManager : MonoBehaviour
 
                         // For testing, just grant instantly
                         item.ReferenceItem.SetOwnedCount(item.ReferenceItem.OwnedCount + 10);
+                        item.SetOwnedCount(0);
                         item.ReferenceItem.SaveState();
                         ChangeCategory(currentCategory);
                         Debug.Log("Player received 10 extra lives!");
