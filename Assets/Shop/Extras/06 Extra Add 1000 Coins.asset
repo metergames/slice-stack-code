@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0a58e3eca88fec4899ee87228ea83e6, type: 3}
   m_Name: 06 Extra Add 1000 Coins
   m_EditorClassIdentifier: 
-  id: EXTRA_ADD_1000_COINS_06
+  id: EXTRA_ADD1000COINS_06
   category: 3
   icon: {fileID: 21300000, guid: eccbc7ac5534d314ba1df50e86d0c7ea, type: 3}
   title: 
@@ -20,6 +20,7 @@ MonoBehaviour:
   skinMaterial: {fileID: 2100000, guid: 663d4fe33f5cef24093003d8315ee36f, type: 2}
   backgroundMaterial: {fileID: 0}
   audioClip: {fileID: 0}
+  referenceItem: {fileID: 0}
   purchaseType: 1
   cost: 0.99
   owned: 0

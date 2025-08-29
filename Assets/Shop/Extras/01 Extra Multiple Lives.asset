@@ -20,6 +20,7 @@ MonoBehaviour:
   skinMaterial: {fileID: 2100000, guid: 663d4fe33f5cef24093003d8315ee36f, type: 2}
   backgroundMaterial: {fileID: 0}
   audioClip: {fileID: 0}
+  referenceItem: {fileID: 11400000, guid: 77376931ab844354085df4793b7e81bb, type: 2}
   purchaseType: 1
   cost: 0.99
   owned: 0
