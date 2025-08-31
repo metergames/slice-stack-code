@@ -20,8 +20,9 @@ MonoBehaviour:
   skinMaterial: {fileID: 0}
   backgroundMaterial: {fileID: 2100000, guid: 8fc74f312be9d1d4b8c0b18c05663df8, type: 2}
   audioClip: {fileID: 0}
+  referenceItem: {fileID: 0}
   purchaseType: 0
   cost: 150
-  owned: 1
+  owned: 0
   selected: 0
   confirmName: this background

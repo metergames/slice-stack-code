@@ -79,7 +79,7 @@ public class StackManager : MonoBehaviour
 
     private IEnumerator EnableInputNextFrame()
     {
-        yield return null;
+        yield return new WaitForEndOfFrame();
         allowInput = true;
     }
 

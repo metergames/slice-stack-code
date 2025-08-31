@@ -1,5 +1,4 @@
 ﻿using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -52,7 +51,6 @@ public class StackManager : MonoBehaviour
     private float slowTimeRecoveryScore = 20; // after 20 points, back to full speed
     private int higherStartScore = 15;
     private float originalPerfectThreshold;
-    private bool allowInput = false;
 
     private void Start()
     {
@@ -73,19 +71,11 @@ public class StackManager : MonoBehaviour
         PlayerPrefs.SetInt("ReadyToPlay", 1);
 
         originalPerfectThreshold = perfectStackThreshold;
-
-        StartCoroutine(EnableInputNextFrame());
-    }
-
-    private IEnumerator EnableInputNextFrame()
-    {
-        yield return null;
-        allowInput = true;
     }
 
     private void Update()
     {
-        if (UIUtils.IsPointerOverUIButton() || PlayerPrefs.GetInt("ReadyToPlay") == 0 || !allowInput)
+        if (UIUtils.IsPointerOverUIButton() || PlayerPrefs.GetInt("ReadyToPlay") == 0)
             return;
 
         if (!gameStarted && !blockIsDropping && !settingsManager.IsSettingsOpen() && !powerupsManager.IsPowerupsOpen() && Input.GetMouseButtonDown(0))

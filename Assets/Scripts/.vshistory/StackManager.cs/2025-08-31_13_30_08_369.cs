@@ -1,5 +1,4 @@
 ﻿using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -79,7 +78,7 @@ public class StackManager : MonoBehaviour
 
     private IEnumerator EnableInputNextFrame()
     {
-        yield return null;
+        yield return new WaitForEndOfFrame();
         allowInput = true;
     }
 
