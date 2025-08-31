@@ -3499,7 +3499,7 @@ MonoBehaviour:
   cameraFollowSpeed: 5
   cameraYOffset: 0
   spawnHeightOffset: 1
-  perfectStackThreshold: 0.2
+  perfectStackThreshold: 0.25
   cineCam: {fileID: 1763121058}
   uiManager: {fileID: 1028247428}
   gradientMaterial: {fileID: 2100000, guid: d07f3db0cc00a0248928e1ad362c45fe, type: 2}
@@ -7564,8 +7564,8 @@ MonoBehaviour:
     isSelected: 0
     infoButton: {fileID: 1492070256}
     infoTitle: Perfect Magnet
-    infoText: Widens the perfect placement zone, making it easier to stack blocks
-      flawlessly and earn streak bonuses.
+    infoText: Widens the perfect placement zone by 50%, making it easier to stack
+      blocks flawlessly and earn streak bonuses.
   - selectButton: {fileID: 1274623103}
     background: {fileID: 1274623104}
     countText: {fileID: 318819315}
@@ -8960,8 +8960,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1028247428}
-        m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
+      - m_Target: {fileID: 2022189858}
+        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
         m_MethodName: CloseShopMenu
         m_Mode: 1
         m_Arguments:
@@ -10053,7 +10053,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1172967441157839488, guid: 72fe9e7b6d41d0345aa8e94043666bfc, type: 3}
       propertyPath: m_LocalScale.y
-      value: 14
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1172967441157839488, guid: 72fe9e7b6d41d0345aa8e94043666bfc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10061,7 +10061,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1172967441157839488, guid: 72fe9e7b6d41d0345aa8e94043666bfc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -7.5
+      value: -13
       objectReference: {fileID: 0}
     - target: {fileID: 1172967441157839488, guid: 72fe9e7b6d41d0345aa8e94043666bfc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10945,8 +10945,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1028247428}
-        m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
+      - m_Target: {fileID: 2022189858}
+        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
         m_MethodName: OpenShopMenu
         m_Mode: 1
         m_Arguments:

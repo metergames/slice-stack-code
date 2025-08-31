@@ -122,5 +122,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDistance: 12.5
-  moveDuration: 1.875
+  moveDuration: 1.7
   moveAxis: 0
