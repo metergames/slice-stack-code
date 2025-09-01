@@ -11720,7 +11720,6 @@ MonoBehaviour:
   audioManagerPrefab: {fileID: 6785837263821116457, guid: 81659bf0269b8634ba1cd540e729a342, type: 3}
   allItems:
   - {fileID: 11400000, guid: e248724e26b8be544ad7d3238c14a2c9, type: 2}
-  - {fileID: 11400000, guid: 90761c82aeb15d143b856dea0079c5db, type: 2}
   - {fileID: 11400000, guid: 7d9910556b4d89c46b8bd51450c9eb3e, type: 2}
   - {fileID: 11400000, guid: c4e0616042d3de44185990d00ea103d1, type: 2}
   - {fileID: 11400000, guid: 17d9c1540bb416548aa0ded7feb20801, type: 2}
@@ -11746,6 +11745,26 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5f3351740c1be05498c44944ca3d6ac4, type: 2}
   - {fileID: 11400000, guid: 6f14899ca4aafb046bd480904327e970, type: 2}
   - {fileID: 11400000, guid: 32ed3ab2ccff6614794eb7a6cafef7c6, type: 2}
+  - {fileID: 11400000, guid: 14646a4c3e35cb74ab71dbbb81b09b7e, type: 2}
+  - {fileID: 11400000, guid: 06d382e4863aa85419e1c60cf507e233, type: 2}
+  - {fileID: 11400000, guid: c169e8e3ca819224fb475d2caf7f1dc9, type: 2}
+  - {fileID: 11400000, guid: 85a14989112f62b47877beba3326fff3, type: 2}
+  - {fileID: 11400000, guid: e3a716a82d81d6746b3338b343b5be4a, type: 2}
+  - {fileID: 11400000, guid: 916fa5335edd88249bc705446c7efb34, type: 2}
+  - {fileID: 11400000, guid: 38b06b3c9337d3949b8be437c1e783ed, type: 2}
+  - {fileID: 11400000, guid: cca3bac1a2c74424d96d3c4f071af7f1, type: 2}
+  - {fileID: 11400000, guid: 04993d90a7f002f43a34f957cb895441, type: 2}
+  - {fileID: 11400000, guid: e8d58d1c51d5418438cfc44a1a8d65c2, type: 2}
+  - {fileID: 11400000, guid: 17d0f971d812c334ca6fd745a32cdcae, type: 2}
+  - {fileID: 11400000, guid: 1fbe15d311beee746806e90239d6cb54, type: 2}
+  - {fileID: 11400000, guid: 73a44bdfdd5824a43b81e91c9e530fdf, type: 2}
+  - {fileID: 11400000, guid: 2b914f46e4982b34c8a4afa0eef05274, type: 2}
+  - {fileID: 11400000, guid: a8e9a554e3cb4204b86c4676e0c1c6cd, type: 2}
+  - {fileID: 11400000, guid: 0f2a5ce40d3c51c4999ef2e4a8be45d3, type: 2}
+  - {fileID: 11400000, guid: 965e47e7cbee9f64abd9c656c6b7a751, type: 2}
+  - {fileID: 11400000, guid: 55fd06f0dfc670d49920e1e2c3439391, type: 2}
+  - {fileID: 11400000, guid: a7c62f5a06cc3784b9b594f9a7a2ec51, type: 2}
+  - {fileID: 11400000, guid: bdd7182d9d72c7f47a3b68d1a74d8e97, type: 2}
 --- !u!4 &2022189859
 Transform:
   m_ObjectHideFlags: 0

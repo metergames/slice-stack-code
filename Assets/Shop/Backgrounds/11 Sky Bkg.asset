@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a58e3eca88fec4899ee87228ea83e6, type: 3}
+  m_Name: 11 Sky Bkg
+  m_EditorClassIdentifier: 
+  id: BKG_SKY_11
+  category: 1
+  icon: {fileID: 21300000, guid: 348d4f0f997a39c4f8894a1c398acb6d, type: 3}
+  title: 
+  ownedCount: 0
+  skinMaterial: {fileID: 0}
+  backgroundGroup: 2
+  backgroundMaterial: {fileID: 2100000, guid: 6382dce6aaad7d84397eda74aa1a4262, type: 2}
+  audioClip: {fileID: 0}
+  referenceItem: {fileID: 0}
+  purchaseType: 0
+  cost: 150
+  owned: 0
+  selected: 0
+  confirmName: the sky background

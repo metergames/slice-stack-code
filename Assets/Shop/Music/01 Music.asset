@@ -18,6 +18,7 @@ MonoBehaviour:
   title: Skyflow
   ownedCount: 0
   skinMaterial: {fileID: 0}
+  backgroundGroup: 0
   backgroundMaterial: {fileID: 0}
   audioClip: {fileID: 8300000, guid: c138bf7fe710b954d90a95af5ec98e79, type: 3}
   referenceItem: {fileID: 0}
