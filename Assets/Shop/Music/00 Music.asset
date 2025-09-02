@@ -18,8 +18,10 @@ MonoBehaviour:
   title: Dream Circuit
   ownedCount: 0
   skinMaterial: {fileID: 0}
+  backgroundGroup: 0
   backgroundMaterial: {fileID: 0}
   audioClip: {fileID: 8300000, guid: 2f2680500ed2ae84b994f1aaf45a436b, type: 3}
+  referenceItem: {fileID: 0}
   purchaseType: 0
   cost: 0
   owned: 1
