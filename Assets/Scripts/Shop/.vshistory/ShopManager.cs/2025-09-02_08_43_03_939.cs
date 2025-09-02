@@ -194,8 +194,6 @@ public class ShopManager : MonoBehaviour
             case ShopCategory.Music:
                 audioManager.SetMusic(item.AudioClip);
                 audioManagerPrefab.musicClip = item.AudioClip;
-                PlayerPrefs.SetString("SelectedMusicID", item.ID);
-                PlayerPrefs.Save();
                 break;
         }
 

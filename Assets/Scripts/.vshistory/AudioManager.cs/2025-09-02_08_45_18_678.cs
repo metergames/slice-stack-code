@@ -24,24 +24,6 @@ public class AudioManager : MonoBehaviour
     private AudioSource uiSource;
     private AudioSource musicSource;
 
-    private void Start()
-    {
-        string savedMusicID = PlayerPrefs.GetString("SelectedMusicID", "");
-        if (!string.IsNullOrEmpty(savedMusicID))
-        {
-            // Find the ShopItem with that ID
-            ShopItem savedItem = ShopManager.Instance.allItems.Find(i => i.ID == savedMusicID);
-            if (savedItem != null && savedItem.AudioClip != null)
-            {
-                musicClip = savedItem.AudioClip;
-                musicSource.clip = musicClip;
-            }
-        }
-
-        if (SettingsManager.IsMusicEnabled())
-            PlayMusic();
-    }
-
     void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }

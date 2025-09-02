@@ -38,8 +38,7 @@ public class AudioManager : MonoBehaviour
             }
         }
 
-        if (SettingsManager.IsMusicEnabled())
-            PlayMusic();
+
     }
 
     void Awake()

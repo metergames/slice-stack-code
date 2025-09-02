@@ -37,9 +37,6 @@ public class AudioManager : MonoBehaviour
                 musicSource.clip = musicClip;
             }
         }
-
-        if (SettingsManager.IsMusicEnabled())
-            PlayMusic();
     }
 
     void Awake()
