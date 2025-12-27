@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 
@@ -26,6 +27,7 @@ public class GameUIManager : MonoBehaviour
     public RectTransform shoppingCartButton;
     public RectTransform powerupsButton;
     public RectTransform powerupBadgesParent;
+    public RectTransform missionsButton;
     private RectTransform coinsRect;
 
     [SerializeField] private PowerupsManager powerupsManager;
@@ -45,14 +47,16 @@ public class GameUIManager : MonoBehaviour
         settingsButton.gameObject.SetActive(true);
         shoppingCartButton.gameObject.SetActive(true);
         powerupsButton.gameObject.SetActive(true);
+        missionsButton.gameObject.SetActive(true);
 
         // Reset anchored positions (based on your original layout)
         titleText.rectTransform.anchoredPosition = new Vector2(0, -225f);
         topScoreText.rectTransform.anchoredPosition = new Vector2(0, -415f);
         tapToStartText.rectTransform.anchoredPosition = new Vector2(0, 450f);
-        settingsButton.anchoredPosition = new Vector2(0, 235f);
-        shoppingCartButton.anchoredPosition = new Vector2(-225f, 235f);
-        powerupsButton.anchoredPosition = new Vector2(225f, 235f);
+        settingsButton.anchoredPosition = new Vector2(-300f, 235f);
+        shoppingCartButton.anchoredPosition = new Vector2(-100f, 235f);
+        powerupsButton.anchoredPosition = new Vector2(100f, 235f);
+        missionsButton.anchoredPosition = new Vector2(300f, 235f);
 
         titleText.alpha = 1f;
         topScoreText.alpha = 1f;
@@ -70,6 +74,10 @@ public class GameUIManager : MonoBehaviour
         if (powerupsButtonGroup != null)
             powerupsButtonGroup.alpha = 1f;
 
+        CanvasGroup missionsButtonGroup = missionsButton.GetComponent<CanvasGroup>();
+        if (missionsButtonGroup != null)
+            missionsButtonGroup.alpha = 1f;
+
         scoreText.text = topScore.ToString();
     }
 
@@ -81,6 +89,7 @@ public class GameUIManager : MonoBehaviour
         settingsButton.gameObject.SetActive(false);
         shoppingCartButton.gameObject.SetActive(false);
         powerupsButton.gameObject.SetActive(false);
+        missionsButton.gameObject.SetActive(false);
     }
 
     public void SetTopScore(int score)
@@ -140,6 +149,12 @@ public class GameUIManager : MonoBehaviour
         if (powerupsGroup != null)
             seq.Join(powerupsGroup.DOFade(0f, duration));
 
+        // Missions button
+        seq.Join(missionsButton.DOLocalMoveY(missionsButton.localPosition.y + 100f, duration));
+        CanvasGroup missionsGroup = missionsButton.GetComponent<CanvasGroup>();
+        if (missionsGroup != null)
+            seq.Join(missionsGroup.DOFade(0f, duration));
+
         seq.OnComplete(() =>
         {
             titleText.gameObject.SetActive(false);
@@ -148,6 +163,7 @@ public class GameUIManager : MonoBehaviour
             settingsButton.gameObject.SetActive(false);
             shoppingCartButton.gameObject.SetActive(false);
             powerupsButton.gameObject.SetActive(false);
+            missionsButton.gameObject.SetActive(false);
             onComplete?.Invoke();
         });
     }
