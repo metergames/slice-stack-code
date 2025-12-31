@@ -23,7 +23,7 @@ MonoBehaviour:
   audioClip: {fileID: 0}
   referenceItem: {fileID: 0}
   purchaseType: 0
-  cost: 150
+  cost: 300
   owned: 0
   selected: 0
   confirmName: the blue background

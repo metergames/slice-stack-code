@@ -14,6 +14,7 @@ public class SettingsManager : MonoBehaviour
     public Button vibrationButton;
     public Button shopButton;
     public Button powerupsButton;
+    public Button missionsButton;
 
     [Header("Colors")]
     private readonly Color onColor = new Color32(0, 200, 83, 255);     // #00C853 (green)
@@ -112,6 +113,7 @@ public class SettingsManager : MonoBehaviour
 
         shopButton.interactable = !shopButton.interactable;
         powerupsButton.interactable = !powerupsButton.interactable;
+        missionsButton.interactable = !missionsButton.interactable;
 
         if (isOpen)
             CloseSettings();

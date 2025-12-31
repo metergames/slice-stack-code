@@ -14,6 +14,7 @@ public class StackManager : MonoBehaviour
     public float cameraYOffset = 1f;
     public float spawnHeightOffset = 1f;
     public float perfectStackThreshold = 0.1f;
+    public float magnetPowerupPerfectStackThreshold = 0.15f;
     public CinemachineCamera cineCam;
     public GameUIManager uiManager;
     public Material gradientMaterial;
@@ -22,6 +23,7 @@ public class StackManager : MonoBehaviour
     public AudioManager audioManager;
     public SettingsManager settingsManager;
     public PowerupsManager powerupsManager;
+    public MissionsManager missionsManager;
 
     public static event System.Action OnGameReset;
 
@@ -34,6 +36,21 @@ public class StackManager : MonoBehaviour
     private float initialOrthoSize;
     private bool blockIsDropping = false;
     private int perfectStreak = 0;
+
+    // Perfect streak mission thresholds
+    private static readonly int[] perfectStreakMissionCounts = { 3, 4, 5, 6, 7, 8, 9, 10, 12, 15 };
+
+    // Score mission thresholds
+    private static readonly int[] scoreMissionThresholds = { 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 100, 150 };
+
+    // Played games mission thresholds
+    private static readonly int[] playedGamesMissionThresholds = { 1, 3, 5, 10, 15, 25, 35, 50, 75, 100, 150, 200, 300 };
+
+    // Total blocks stacked mission thresholds
+    private static readonly int[] blocksStackedMissionThresholds = { 50, 100, 150, 200, 300, 400, 500, 1000, 2000, 3000, 5000, 7500, 15000 };
+
+    // Total perfect blocks stacked mission thresholds
+    private static readonly int[] totalPerfectsMissionThresholds = { 10, 15, 25, 40, 50, 100, 150, 250, 500, 750, 1000, 2000 };
 
     // Colors
     private float hue = 0f;
@@ -88,7 +105,7 @@ public class StackManager : MonoBehaviour
         if (UIUtils.IsPointerOverUIButton() || PlayerPrefs.GetInt("ReadyToPlay") == 0 || !allowInput)
             return;
 
-        if (!gameStarted && !blockIsDropping && !settingsManager.IsSettingsOpen() && !powerupsManager.IsPowerupsOpen() && Input.GetMouseButtonDown(0))
+        if (!gameStarted && !blockIsDropping && !settingsManager.IsSettingsOpen() && !powerupsManager.IsPowerupsOpen() && !missionsManager.IsMissionsOpen() && Input.GetMouseButtonDown(0))
         {
             gameStarted = true;
             score = 0;
@@ -116,7 +133,7 @@ public class StackManager : MonoBehaviour
 
                     case "EXTRA_PERFECTMAGNET_04":
                         hasPerfectMagnet = true;
-                        perfectStackThreshold = 0.375f; // wider tolerance
+                        perfectStackThreshold = magnetPowerupPerfectStackThreshold; // wider tolerance
                         break;
 
                     case "EXTRA_COINDOUBLER_05":
@@ -239,7 +256,7 @@ public class StackManager : MonoBehaviour
                     // Add to stack properly
                     stackBlocks.Add(currentBlock.gameObject);
 
-                    // Reset streak since this wasn’t a perfect
+                    // Reset streak since this wasn't a perfect
                     perfectStreak = 0;
 
                     // Reward the player with at least 1 coin (double if active)
@@ -250,6 +267,12 @@ public class StackManager : MonoBehaviour
                     score++;
                     uiManager.UpdateScore(score);
                     uiManager.AnimateScorePopup();
+
+                    // Track score-based missions
+                    UpdateScoreMissions();
+
+                    // Track total blocks placed (cumulative across all games)
+                    UpdateBlocksStackedMissions();
 
                     // Keep playing normally
                     blockIsDropping = false;
@@ -299,6 +322,14 @@ public class StackManager : MonoBehaviour
             uiManager.UpdateScore(score);
             uiManager.AnimateScorePopup(true);
 
+            // Track missions
+            UpdateScoreMissions();
+            UpdateBlocksStackedMissions();
+            UpdateTotalPerfectsMissions();
+
+            // Track perfect streak missions
+            UpdatePerfectStreakMissions();
+
             DropBlock(currentBlock, targetY, () =>
             {
                 audioManager.PlaySFX(audioManager.perfectClip);
@@ -319,11 +350,16 @@ public class StackManager : MonoBehaviour
         float finalY = previousBlock.position.y + (prevHeight / 2f) + (currHeight / 2f);
 
         perfectStreak = 0;
+        ResetPerfectStreakMissions();
         CurrencyManager.Instance.AddCoins(hasCoinDoubler ? 2 : 1);
 
         score++;
         uiManager.UpdateScore(score);
         uiManager.AnimateScorePopup();
+
+        // Track missions
+        UpdateScoreMissions();
+        UpdateBlocksStackedMissions();
 
         DropBlock(currentBlock, finalY, () =>
         {
@@ -335,6 +371,54 @@ public class StackManager : MonoBehaviour
         });
 
         MoveCamera();
+    }
+
+    private void UpdateScoreMissions()
+    {
+        foreach (int threshold in scoreMissionThresholds)
+        {
+            MissionsManager.Instance?.SetMissionProgress($"MISSION_SCORE_{threshold}", score);
+        }
+    }
+
+    private void UpdatePerfectStreakMissions()
+    {
+        foreach (int count in perfectStreakMissionCounts)
+        {
+            MissionsManager.Instance?.SetSessionProgress($"MISSION_PERFECT_{count}", perfectStreak);
+        }
+    }
+
+    private void ResetPerfectStreakMissions()
+    {
+        foreach (int count in perfectStreakMissionCounts)
+        {
+            MissionsManager.Instance?.ResetSessionProgress($"MISSION_PERFECT_{count}");
+        }
+    }
+
+    private void UpdatePlayedGamesMissions()
+    {
+        foreach (int threshold in playedGamesMissionThresholds)
+        {
+            MissionsManager.Instance?.IncrementMission($"MISSION_PLAY_{threshold}");
+        }
+    }
+
+    private void UpdateBlocksStackedMissions()
+    {
+        foreach (int threshold in blocksStackedMissionThresholds)
+        {
+            MissionsManager.Instance?.IncrementMission($"MISSION_BLOCKS_{threshold}");
+        }
+    }
+
+    private void UpdateTotalPerfectsMissions()
+    {
+        foreach (int threshold in totalPerfectsMissionThresholds)
+        {
+            MissionsManager.Instance?.IncrementMission($"MISSION_TOTAL_PERFECTS_{threshold}");
+        }
     }
 
     private void MoveCamera()
@@ -466,6 +550,9 @@ public class StackManager : MonoBehaviour
         uiManager.FadeToBlack(() =>
         {
             OnGameReset?.Invoke();
+
+            // Track played games missions
+            UpdatePlayedGamesMissions();
 
             // Destroy all blocks except the base block
             for (int i = 1; i < stackBlocks.Count; i++)

@@ -23,7 +23,7 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: c138bf7fe710b954d90a95af5ec98e79, type: 3}
   referenceItem: {fileID: 0}
   purchaseType: 0
-  cost: 150
+  cost: 750
   owned: 0
   selected: 0
   confirmName: the Skyflow soundtrack

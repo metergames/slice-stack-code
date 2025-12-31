@@ -23,7 +23,7 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: a230eff32d677094f9b20d6b2db38635, type: 3}
   referenceItem: {fileID: 0}
   purchaseType: 0
-  cost: 150
+  cost: 750
   owned: 0
   selected: 0
   confirmName: the Daydream soundtrack

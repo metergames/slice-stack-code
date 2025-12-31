@@ -23,7 +23,7 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: 616be4eb17de91448b5c9346bfda8c0c, type: 3}
   referenceItem: {fileID: 0}
   purchaseType: 0
-  cost: 150
+  cost: 750
   owned: 0
   selected: 0
   confirmName: the Clair Drift soundtrack

@@ -23,7 +23,7 @@ MonoBehaviour:
   audioClip: {fileID: 0}
   referenceItem: {fileID: 0}
   purchaseType: 0
-  cost: 200
+  cost: 1500
   owned: 0
   selected: 0
   confirmName: the neon cyan background

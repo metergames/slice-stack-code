@@ -13,6 +13,9 @@ public class CurrencyManager : MonoBehaviour
     private int coins = 0;
     private const string COINS_KEY = "Coins";
 
+    // Coin collection mission thresholds
+    private static readonly int[] coinMissionAmounts = { 50, 100, 200, 400, 500, 750, 1000, 2000, 3500, 5000, 7500, 10000, 20000 };
+
     private void Awake()
     {
         if (Instance == null)
@@ -38,6 +41,17 @@ public class CurrencyManager : MonoBehaviour
         coins += amount;
         PlayerPrefs.SetInt(COINS_KEY, coins);
         uiManager.UpdateCoins(coins);
+
+        // Track coin missions
+        UpdateCoinMissions(amount);
+    }
+
+    private void UpdateCoinMissions(int amount)
+    {
+        foreach (int threshold in coinMissionAmounts)
+        {
+            MissionsManager.Instance?.IncrementMission($"MISSION_COINS_{threshold}", amount);
+        }
     }
 
     public bool SpendCoins(int amount)

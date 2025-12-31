@@ -23,7 +23,7 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: 50f534db1c93d3945acf9a59ef6dffa2, type: 3}
   referenceItem: {fileID: 0}
   purchaseType: 0
-  cost: 150
+  cost: 750
   owned: 0
   selected: 0
   confirmName: the Velura soundtrack

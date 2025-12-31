@@ -31,8 +31,9 @@ public class PowerupsManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private RectTransform powerupsPanel;
     [SerializeField] private CanvasGroup powerupsCanvasGroup;
-    [SerializeField] private Button shopButton;
     [SerializeField] private Button settingsButton;
+    [SerializeField] private Button shopButton;
+    [SerializeField] private Button missionsButton;
 
     [Header("Animation")]
     [SerializeField] private float animationDuration = 0.3f;
@@ -128,8 +129,9 @@ public class PowerupsManager : MonoBehaviour
     {
         AudioManager.Instance.PlayUISound();
 
-        shopButton.interactable = !shopButton.interactable;
         settingsButton.interactable = !settingsButton.interactable;
+        shopButton.interactable = !shopButton.interactable;
+        missionsButton.interactable = !missionsButton.interactable;
 
         if (isOpen)
             ClosePowerups();

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0f79c4e092ce82468ad634c92e7119c, type: 3}
+  m_Name: Mission_Progression_TotalPerfects_2000
+  m_EditorClassIdentifier: Assembly-CSharp::MissionData
+  id: MISSION_TOTAL_PERFECTS_2000
+  type: 4
+  description: Get 2000 perfect stacks total
+  requiredValue: 2000
+  hasProgressBar: 1
+  unlockLevel: 19
+  rewardAmount: 1600
