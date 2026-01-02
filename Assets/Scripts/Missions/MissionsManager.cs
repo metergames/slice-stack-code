@@ -32,21 +32,22 @@ public class MissionsManager : MonoBehaviour
     public Button shopButton;
     public Button powerupsButton;
 
+    [Header("Notification")]
+    public GameObject notificationBadge; // LINK YOUR RED CIRCLE HERE
+
     private Dictionary<string, int> missionProgress = new();
     private HashSet<string> completedMissions = new();
     private HashSet<string> claimedMissions = new();
-
-    // Temporary session-only tracking (resets each run)
     private Dictionary<string, int> sessionProgress = new();
 
     private bool isOpen = false;
-    private bool isDirty = false; // Track if we need to refresh UI
+    private bool isDirty = false;
     private int currentLevel = 1;
     private int maxLevel = 1;
 
     private const string LEVEL_KEY = "MissionLevel";
-    private const float PROGRESS_BAR_MIN_RIGHT = 507f; // 0% progress
-    private const float PROGRESS_BAR_MAX_RIGHT = 5f;   // 100% progress
+    private const float PROGRESS_BAR_MIN_RIGHT = 507f;
+    private const float PROGRESS_BAR_MAX_RIGHT = 5f;
 
     private void Awake()
     {
@@ -57,11 +58,13 @@ public class MissionsManager : MonoBehaviour
 
     private void Start()
     {
-        // Calculate max level from all missions
         if (allMissions.Count > 0)
             maxLevel = allMissions.Max(m => m.UnlockLevel);
 
         LoadProgress();
+
+        // Initial Check
+        CheckNotificationBadge();
     }
 
     private void OnEnable()
@@ -76,8 +79,8 @@ public class MissionsManager : MonoBehaviour
 
     private void OnApplicationPause(bool pauseStatus)
     {
-        if (pauseStatus)
-            SaveToDisk();
+        if (pauseStatus) SaveToDisk();
+        else CheckNotificationBadge(); // Re-check when coming back to app
     }
 
     private void OnApplicationQuit()
@@ -87,27 +90,54 @@ public class MissionsManager : MonoBehaviour
 
     private void OnGameReset()
     {
-        // Reset session-only progress (streaks, single-run goals)
         sessionProgress.Clear();
         MarkDirty();
     }
 
-    /// <summary>
-    /// Marks the UI as needing a refresh. Actual refresh happens when menu opens.
-    /// </summary>
     private void MarkDirty()
     {
         isDirty = true;
     }
 
-    /// <summary>
-    /// Increment progress by a value (for cumulative missions like "collect 100 coins total")
-    /// </summary>
+    // --- NOTIFICATION LOGIC ---
+    public void CheckNotificationBadge()
+    {
+        if (notificationBadge == null) return;
+
+        bool anyMissionClaimable = HasAnyClaimableMission();
+
+        // Check Daily Reward too
+        bool dailyClaimable = false;
+        if (DailyRewardsManager.Instance != null)
+        {
+            dailyClaimable = DailyRewardsManager.Instance.CanClaimToday();
+        }
+
+        notificationBadge.SetActive(anyMissionClaimable || dailyClaimable);
+    }
+
+    private bool HasAnyClaimableMission()
+    {
+        // Check only missions in current level
+        foreach (var mission in allMissions)
+        {
+            if (mission.UnlockLevel == currentLevel)
+            {
+                bool isCompleted = completedMissions.Contains(mission.ID);
+                bool isClaimed = claimedMissions.Contains(mission.ID);
+
+                if (isCompleted && !isClaimed)
+                    return true;
+            }
+        }
+        return false;
+    }
+    // --------------------------
+
     public void IncrementMission(string missionID, int amount = 1)
     {
         if (claimedMissions.Contains(missionID)) return;
 
-        // Only track missions for current level
         var mission = allMissions.Find(m => m.ID == missionID);
         if (mission == null || mission.UnlockLevel != currentLevel) return;
 
@@ -119,18 +149,13 @@ public class MissionsManager : MonoBehaviour
         SaveToMemory();
     }
 
-    /// <summary>
-    /// Set progress to a specific value (for "reach score X" type missions)
-    /// </summary>
     public void SetMissionProgress(string missionID, int value)
     {
         if (claimedMissions.Contains(missionID)) return;
 
-        // Only track missions for current level
         var mission = allMissions.Find(m => m.ID == missionID);
         if (mission == null || mission.UnlockLevel != currentLevel) return;
 
-        // Only update if new value is higher (for high-score style missions)
         if (!missionProgress.ContainsKey(missionID) || value > missionProgress[missionID])
         {
             missionProgress[missionID] = value;
@@ -139,40 +164,29 @@ public class MissionsManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Track session-only progress (resets each run). Good for streaks.
-    /// </summary>
     public void SetSessionProgress(string missionID, int value)
     {
         if (claimedMissions.Contains(missionID)) return;
 
-        // Only track missions for current level
         var mission = allMissions.Find(m => m.ID == missionID);
         if (mission == null || mission.UnlockLevel != currentLevel) return;
 
         sessionProgress[missionID] = value;
 
-        // If session progress meets requirement, mark as complete
         if (mission != null && value >= mission.RequiredValue)
         {
-            missionProgress[missionID] = value; // Persist the completion
+            missionProgress[missionID] = value;
             CheckCompletion(missionID);
             SaveToMemory();
         }
     }
 
-    /// <summary>
-    /// Reset session progress for a specific mission (e.g., streak broken)
-    /// </summary>
     public void ResetSessionProgress(string missionID)
     {
         if (sessionProgress.ContainsKey(missionID))
             sessionProgress[missionID] = 0;
     }
 
-    /// <summary>
-    /// Get current progress for a mission (combines persistent + session)
-    /// </summary>
     public int GetProgress(string missionID)
     {
         int persistent = missionProgress.ContainsKey(missionID) ? missionProgress[missionID] : 0;
@@ -180,21 +194,10 @@ public class MissionsManager : MonoBehaviour
         return Mathf.Max(persistent, session);
     }
 
-    public bool IsMissionCompleted(string missionID)
-    {
-        return completedMissions.Contains(missionID);
-    }
-
-    public bool IsMissionClaimed(string missionID)
-    {
-        return claimedMissions.Contains(missionID);
-    }
-
+    public bool IsMissionCompleted(string missionID) => completedMissions.Contains(missionID);
+    public bool IsMissionClaimed(string missionID) => claimedMissions.Contains(missionID);
     public int GetCurrentLevel() => currentLevel;
 
-    /// <summary>
-    /// Claim a completed mission and receive rewards
-    /// </summary>
     public void ClaimMission(string missionID)
     {
         if (!completedMissions.Contains(missionID) || claimedMissions.Contains(missionID))
@@ -208,12 +211,12 @@ public class MissionsManager : MonoBehaviour
 
         Debug.Log($"Mission claimed: {mission.Description}, rewarded {mission.RewardAmount} coins");
 
-        // Check if all missions for current level are claimed
         CheckLevelCompletion();
-
         SaveToMemory();
-        
-        // Refresh UI immediately since we're in the menu
+
+        // Update badge (turn off if this was the last one)
+        CheckNotificationBadge();
+
         if (isOpen)
             RefreshUI();
     }
@@ -228,6 +231,9 @@ public class MissionsManager : MonoBehaviour
         {
             completedMissions.Add(missionID);
             Debug.Log($"Mission completed: {mission.Description}");
+
+            // Notification!
+            CheckNotificationBadge();
         }
         MarkDirty();
     }
@@ -235,8 +241,6 @@ public class MissionsManager : MonoBehaviour
     private void CheckLevelCompletion()
     {
         var currentLevelMissions = allMissions.Where(m => m.UnlockLevel == currentLevel).ToList();
-
-        // Check if all missions for current level are claimed
         bool allClaimed = currentLevelMissions.All(m => claimedMissions.Contains(m.ID));
 
         if (allClaimed && currentLevelMissions.Count > 0 && currentLevel < maxLevel)
@@ -251,22 +255,17 @@ public class MissionsManager : MonoBehaviour
     public void RefreshUI()
     {
         isDirty = false;
-
-        // Update level progress UI
         UpdateLevelProgressUI();
 
-        // Clear old rows
         foreach (Transform child in missionListParent)
             Destroy(child.gameObject);
 
-        // Get missions for current level only
         var currentLevelMissions = allMissions
             .Where(m => m.UnlockLevel == currentLevel && !claimedMissions.Contains(m.ID))
-            .OrderByDescending(m => completedMissions.Contains(m.ID)) // Ready to claim first
-            .ThenBy(m => m.ID) // Consistent ordering
+            .OrderByDescending(m => completedMissions.Contains(m.ID))
+            .ThenBy(m => m.ID)
             .ToList();
 
-        // Create new rows with separators between them
         for (int i = 0; i < currentLevelMissions.Count; i++)
         {
             var mission = currentLevelMissions[i];
@@ -278,7 +277,6 @@ public class MissionsManager : MonoBehaviour
             var ui = go.GetComponent<MissionUI>();
             ui.Setup(mission, progress, isCompleted, isClaimed);
 
-            // Add separator after each item except the last one
             if (separatorPrefab != null && i < currentLevelMissions.Count - 1)
             {
                 Instantiate(separatorPrefab, missionListParent);
@@ -288,37 +286,28 @@ public class MissionsManager : MonoBehaviour
 
     private void UpdateLevelProgressUI()
     {
-        // Get all missions for current level
         var currentLevelMissions = allMissions.Where(m => m.UnlockLevel == currentLevel).ToList();
         int totalMissions = currentLevelMissions.Count;
         int claimedCount = currentLevelMissions.Count(m => claimedMissions.Contains(m.ID));
 
-        // Update level labels
         if (currentLevelLabel != null)
             currentLevelLabel.text = $"Level {currentLevel}";
 
         if (nextLevelLabel != null)
         {
-            // Show "MAX" if current level is the max level, otherwise show next level
-            if (currentLevel >= maxLevel)
-                nextLevelLabel.text = "MAX";
+            if (currentLevel >= maxLevel) nextLevelLabel.text = "MAX";
             else nextLevelLabel.text = $"Level {currentLevel + 1}";
         }
 
-        // Update progress fraction label
         if (progressFractionLabel != null)
             progressFractionLabel.text = $"{claimedCount}/{totalMissions}";
 
-        // Update progress bar fill
         if (levelProgressBarFill != null)
         {
             float percent = totalMissions > 0 ? (float)claimedCount / totalMissions : 0f;
-
-            // Interpolate from 507 (0%) to 5 (100%)
             float rightValue = Mathf.Lerp(PROGRESS_BAR_MIN_RIGHT, PROGRESS_BAR_MAX_RIGHT, percent);
-
             Vector2 offsetMax = levelProgressBarFill.offsetMax;
-            offsetMax.x = -rightValue; // Negative because offsetMax.x is the right offset
+            offsetMax.x = -rightValue;
             levelProgressBarFill.offsetMax = offsetMax;
         }
     }
@@ -332,7 +321,6 @@ public class MissionsManager : MonoBehaviour
             PlayerPrefs.SetInt($"{mission.ID}_Claimed", claimedMissions.Contains(mission.ID) ? 1 : 0);
         }
         PlayerPrefs.SetInt(LEVEL_KEY, currentLevel);
-        // Note: No PlayerPrefs.Save() here - only writing to memory
     }
 
     private void SaveToDisk()
@@ -357,12 +345,11 @@ public class MissionsManager : MonoBehaviour
             int claimed = PlayerPrefs.GetInt($"{mission.ID}_Claimed", 0);
 
             missionProgress[mission.ID] = progress;
-            if (completed == 1)
-                completedMissions.Add(mission.ID);
-            if (claimed == 1)
-                claimedMissions.Add(mission.ID);
+            if (completed == 1) completedMissions.Add(mission.ID);
+            if (claimed == 1) claimedMissions.Add(mission.ID);
         }
 
+        CheckNotificationBadge(); // Check after loading
         MarkDirty();
     }
 
@@ -374,19 +361,14 @@ public class MissionsManager : MonoBehaviour
         shopButton.interactable = !shopButton.interactable;
         powerupsButton.interactable = !powerupsButton.interactable;
 
-        if (isOpen)
-            CloseMissions();
-        else
-            OpenMissions();
+        if (isOpen) CloseMissions();
+        else OpenMissions();
     }
 
     private void OpenMissions()
     {
         isOpen = true;
-
-        // Refresh UI when opening if dirty
-        if (isDirty)
-            RefreshUI();
+        if (isDirty) RefreshUI();
 
         missionsPanel.localScale = Vector3.zero;
         missionsCanvasGroup.alpha = 0f;
@@ -404,10 +386,8 @@ public class MissionsManager : MonoBehaviour
     private void CloseMissions()
     {
         isOpen = false;
-
         missionsCanvasGroup.interactable = false;
         missionsCanvasGroup.blocksRaycasts = false;
-
         missionsPanel.DOScale(0f, animationDuration).SetEase(Ease.InBack);
         missionsCanvasGroup.DOFade(0f, animationDuration);
     }
