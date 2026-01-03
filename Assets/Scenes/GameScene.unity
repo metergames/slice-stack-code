@@ -8629,7 +8629,7 @@ MonoBehaviour:
   textNormalColor: {r: 1, g: 1, b: 1, a: 1}
   bgDisabledColor: {r: 0.6415094, g: 0, b: 0, a: 0.6666667}
   textDisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-  danceInterval: 5
+  danceInterval: 3
 --- !u!1 &1120840108
 GameObject:
   m_ObjectHideFlags: 0
