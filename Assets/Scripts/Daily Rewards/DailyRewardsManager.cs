@@ -74,9 +74,7 @@ public class DailyRewardsManager : MonoBehaviour
     {
         int currentStreak = PlayerPrefs.GetInt(STREAK_KEY, 0);
         bool canClaim = CanClaimToday();
-        
-        // If we can't claim today, the streak already reflects today's claim,
-        // so the "current" day is actually the one we already claimed
+
         int todayIndex = canClaim ? currentStreak % 7 : (currentStreak - 1) % 7;
         if (todayIndex < 0) todayIndex = 0;
 
@@ -89,7 +87,6 @@ public class DailyRewardsManager : MonoBehaviour
             if (i < todayIndex) dayItem.SetState(DayState.Claimed, claimedColor);
             else if (i == todayIndex)
             {
-                // Today's day - show as claimed if already claimed, otherwise current
                 dayItem.SetState(canClaim ? DayState.Current : DayState.Claimed, canClaim ? currentColor : claimedColor);
             }
             else dayItem.SetState(DayState.Locked, lockedColor);
@@ -130,7 +127,7 @@ public class DailyRewardsManager : MonoBehaviour
         int rewardAmount = rewardValues[dayIndex];
 
         CurrencyManager.Instance.AddCoins(rewardAmount);
-        AudioManager.Instance.PlayUISound();
+        AudioManager.Instance.PlayUIPurchaseSound();
         StackManager.VibrateClick();
 
         string todayDate = DateTime.Now.ToString("yyyy-MM-dd");

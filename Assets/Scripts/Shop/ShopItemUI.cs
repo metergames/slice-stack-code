@@ -11,7 +11,7 @@ public class ShopItemUI : MonoBehaviour
     public GameObject darkFade;
     public GameObject selectedBorder;
     public Button itemButton;
-    public GameObject countText; // only for Extras
+    public GameObject countText;
 
     private ShopItem item;
     private ShopManager manager;
@@ -39,7 +39,7 @@ public class ShopItemUI : MonoBehaviour
         costText.gameObject.SetActive(!isOwned);
         selectedBorder.SetActive(isSelected);
 
-        countText.gameObject.SetActive(false); // default hidden
+        countText.gameObject.SetActive(false);
         if (item.Category == ShopCategory.Extras)
         {
             lockIcon.SetActive(false);
@@ -47,26 +47,36 @@ public class ShopItemUI : MonoBehaviour
 
             if (item.PurchaseWith == PurchaseType.Coins)
             {
-                // Show count for coin-purchased extras
                 countText.SetActive(true);
                 countText.GetComponentInChildren<TextMeshProUGUI>().text = item.OwnedCount.ToString();
             }
             else if (item.PurchaseWith == PurchaseType.RealMoney)
             {
-                // Real money extras should never show count
                 countText.SetActive(false);
             }
         }
 
         itemButton.onClick.RemoveAllListeners();
-        itemButton.onClick.AddListener(() =>
+        itemButton.onClick.AddListener(OnItemClicked);
+    }
+
+    private void OnItemClicked()
+    {
+        StackManager.VibrateClick();
+
+        if (item.Owned)
         {
             AudioManager.Instance.PlayUISound();
-            StackManager.VibrateClick();
-            if (item.Owned)
-                manager.OnItemSelected(item);
-            else
-                manager.AttemptPurchase(item);
-        });
+            manager.OnItemSelected(item);
+        }
+        else
+        {
+            bool success = manager.AttemptPurchase(item);
+            if (success)
+            {
+                AudioManager.Instance.PlayUIPurchaseSound();
+            }
+            // Error sound is played inside PlayInsufficientFundsAnimation() when purchase fails
+        }
     }
 }

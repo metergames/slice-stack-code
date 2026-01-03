@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class ShopManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class ShopManager : MonoBehaviour
     public Transform contentParent;
     public GameObject shopItemPrefab;
     public Button skinsTab, backgroundsTab, musicTab, extrasTab;
+    public TextMeshProUGUI shopCoinsLabel;
 
     [Header("Tab Colors")]
     public Color selectedColor = new Color(0.12f, 0.69f, 0.36f);  // #1FB05B
@@ -18,16 +20,15 @@ public class ShopManager : MonoBehaviour
     public Color selectedTextColor = Color.white;                 // #FFFFFF
     public Color unselectedTextColor = new Color(0.196f, 0.196f, 0.196f); // #323232
 
-    //[Header("Section Labels")]
-    //public TMP_FontAsset sectionLabelFont;
-    //public Color sectionLabelColor = Color.white;
+    [Header("Coin Label Animation")]
+    public Color coinLabelErrorColor = new Color32(239, 68, 68, 255); // Red color for error
 
     [Header("Scene References")]
-    public GameObject stackBlockPrefab;  // assigned prefab
-    public Transform backgroundObject;   // background GameObject with material
-    public Transform backgroundPrefab;   // background GameObject prefab with material
-    public AudioManager audioManager;     // for switching music
-    public AudioManager audioManagerPrefab;     // prefab for switching music
+    public GameObject stackBlockPrefab;
+    public Transform backgroundObject;
+    public Transform backgroundPrefab;
+    public AudioManager audioManager;
+    public AudioManager audioManagerPrefab;
 
     [Header("Items")]
     public List<ShopItem> allItems;
@@ -36,6 +37,7 @@ public class ShopManager : MonoBehaviour
 
     private ShopCategory currentCategory;
     private List<ShopItemUI> spawnedItems = new List<ShopItemUI>();
+    private Color coinLabelOriginalColor;
 
     private void Awake()
     {
@@ -52,6 +54,10 @@ public class ShopManager : MonoBehaviour
         backgroundsTab.onClick.AddListener(() => ChangeCategory(ShopCategory.Backgrounds));
         musicTab.onClick.AddListener(() => ChangeCategory(ShopCategory.Music));
         extrasTab.onClick.AddListener(() => ChangeCategory(ShopCategory.Extras));
+
+        // Cache original coin label color
+        if (shopCoinsLabel != null)
+            coinLabelOriginalColor = shopCoinsLabel.color;
 
         ChangeCategory(ShopCategory.Skins);
     }
@@ -92,36 +98,17 @@ public class ShopManager : MonoBehaviour
 
         if (currentCategory == ShopCategory.Backgrounds)
         {
-            // Order of groups
             var groups = new[]
             {
-            BackgroundGroup.None,
-            BackgroundGroup.ClassicMinimal,
-            BackgroundGroup.SoftPastels,
-            BackgroundGroup.DarkAesthetics,
-            BackgroundGroup.Neon
-        };
+                BackgroundGroup.None,
+                BackgroundGroup.ClassicMinimal,
+                BackgroundGroup.SoftPastels,
+                BackgroundGroup.DarkAesthetics,
+                BackgroundGroup.Neon
+            };
 
             foreach (var group in groups)
             {
-                // Add a label unless it's "None"
-                //if (group != BackgroundGroup.None)
-                //{
-                //    var labelGO = new GameObject("Label", typeof(RectTransform), typeof(Text));
-                //    labelGO.transform.SetParent(contentParent, false);
-
-                //    var text = labelGO.GetComponent<Text>();
-                //    text.text = group.ToString();
-                //    text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-                //    text.fontSize = 28;
-                //    text.alignment = TextAnchor.MiddleLeft;
-                //    text.color = Color.white;
-                //}
-
-                //if (group != BackgroundGroup.None)
-                //    CreateSectionLabel(group.ToString());
-
-                // Spawn items for this group
                 foreach (var item in allItems)
                 {
                     if (item.Category == ShopCategory.Backgrounds && item.BackgroundGroup == group)
@@ -149,27 +136,42 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    //private void CreateSectionLabel(string labelText)
-    //{
-    //    GameObject labelGO = new GameObject("SectionLabel", typeof(RectTransform));
-    //    labelGO.transform.SetParent(contentParent, false);
+    public void UpdateShopCoinsLabel()
+    {
+        if (shopCoinsLabel != null)
+        {
+            int coins = CurrencyManager.Instance.GetCoinCount();
+            shopCoinsLabel.text = $"<sprite=0>{coins}";
+        }
+    }
 
-    //    var text = labelGO.AddComponent<TextMeshProUGUI>();
-    //    text.text = labelText;
-    //    text.font = sectionLabelFont;
-    //    text.fontSizeMax = 72;
-    //    text.enableAutoSizing = true;
-    //    text.alignment = TextAlignmentOptions.Left;
-    //    text.color = Color.white;
+    public void PlayInsufficientFundsAnimation()
+    {
+        if (shopCoinsLabel == null) return;
 
-    //    // Optional padding / layout tweaks
-    //    RectTransform rt = labelGO.GetComponent<RectTransform>();
-    //    rt.sizeDelta = new Vector2(rt.sizeDelta.x, 100); // give it some height
-    //}
+        RectTransform rt = shopCoinsLabel.rectTransform;
+
+        // Kill any existing tweens on label
+        DOTween.Kill(shopCoinsLabel);
+        DOTween.Kill(rt);
+
+        // Reset to original color
+        shopCoinsLabel.color = coinLabelOriginalColor;
+
+        // Flash red and shake
+        Sequence seq = DOTween.Sequence();
+
+        // Color flash to red then back
+        seq.Append(shopCoinsLabel.DOColor(coinLabelErrorColor, 0.1f));
+        seq.Join(rt.DOShakeAnchorPos(0.4f, new Vector2(15f, 0f), 20, 90, false, true));
+        seq.Append(shopCoinsLabel.DOColor(coinLabelOriginalColor, 0.3f));
+
+        // Play error sound
+        AudioManager.Instance?.PlayUIErrorSound();
+    }
 
     public void OnItemSelected(ShopItem item)
     {
-        // Mark selected flag appropriately
         foreach (var it in allItems)
             if (it.Category == item.Category)
             {
@@ -181,8 +183,6 @@ public class ShopManager : MonoBehaviour
         {
             case ShopCategory.Skins:
                 stackBlockPrefab.GetComponent<Renderer>().material = item.SkinMaterial;
-                //var block = Instantiate(stackBlockPrefab);
-                //block.GetComponent<Renderer>().material = item.SkinMaterial; // does it for this newly instantiated block, but not for all the next ones. maybe make it a property.
                 break;
 
             case ShopCategory.Backgrounds:
@@ -202,9 +202,9 @@ public class ShopManager : MonoBehaviour
         RefreshItems();
     }
 
-    public void AttemptPurchase(ShopItem item)
+    public bool AttemptPurchase(ShopItem item)
     {
-        if (item.Category == ShopCategory.Extras) // Extras
+        if (item.Category == ShopCategory.Extras)
         {
             if (item.PurchaseWith == PurchaseType.Coins)
             {
@@ -213,46 +213,48 @@ public class ShopManager : MonoBehaviour
                     item.SetOwnedCount(item.OwnedCount + 1);
                     item.SaveState();
                     CurrencyManager.Instance.uiManager.UpdateCoins(CurrencyManager.Instance.GetCoinCount());
-                    ChangeCategory(currentCategory); // refresh display
+                    UpdateShopCoinsLabel();
+                    ChangeCategory(currentCategory);
                     Debug.Log($"Purchased extra: {item.ID}. New count: {item.OwnedCount}");
+                    return true;
                 }
                 else
                 {
                     Debug.Log("Not enough coins for extra.");
+                    PlayInsufficientFundsAnimation();
+                    return false;
                 }
             }
-            else // Real money purchase
+            else
             {
                 switch (item.ID)
                 {
                     case "EXTRA_MULTIPLELIVES_01":
-                        // Trigger Unity IAP purchase
                         Debug.Log("Initiating IAP for 10 extra lives...");
-
-                        // For testing, just grant instantly
                         item.ReferenceItem.SetOwnedCount(item.ReferenceItem.OwnedCount + 10);
                         item.ReferenceItem.SaveState();
                         ChangeCategory(currentCategory);
                         Debug.Log("Player received 10 extra lives!");
-                        break;
+                        return true;
 
                     case "EXTRA_ADD1000COINS_06":
                         CurrencyManager.Instance.AddCoins(1000);
+                        UpdateShopCoinsLabel();
                         Debug.Log("Player purchased 1000 coins!");
-                        break;
+                        return true;
 
                     default:
                         Debug.LogWarning($"Unhandled real money item: {item.ID}");
-                        break;
+                        return false;
                 }
             }
         }
-        else // Skins, Backgrounds, Music
+        else
         {
             if (item.Owned)
             {
                 Debug.Log("Item already owned.");
-                return;
+                return false;
             }
 
             if (item.PurchaseWith == PurchaseType.Coins)
@@ -261,19 +263,23 @@ public class ShopManager : MonoBehaviour
                 {
                     item.SetOwned(true);
                     item.SaveState();
-                    //item.GetType().GetField("owned", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(item, true);
                     CurrencyManager.Instance.uiManager.UpdateCoins(CurrencyManager.Instance.GetCoinCount());
-                    ChangeCategory(currentCategory); // refresh display
+                    UpdateShopCoinsLabel();
+                    ChangeCategory(currentCategory);
                     Debug.Log($"Purchased: {item.ID}");
+                    return true;
                 }
                 else
                 {
                     Debug.Log("Not enough coins.");
+                    PlayInsufficientFundsAnimation();
+                    return false;
                 }
             }
             else
             {
                 Debug.Log("Real money purchase is not implemented.");
+                return false;
             }
         }
     }
@@ -281,6 +287,7 @@ public class ShopManager : MonoBehaviour
     public void OpenShopMenu()
     {
         PlayerPrefs.SetInt("ReadyToPlay", 0);
+        UpdateShopCoinsLabel();
         RefreshItems();
     }
 

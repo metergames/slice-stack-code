@@ -16,7 +16,7 @@ MonoBehaviour:
   category: 3
   icon: {fileID: 21300000, guid: ff2f00a9fdd43484885741bce2b81caa, type: 3}
   title: 
-  ownedCount: 0
+  ownedCount: 3
   skinMaterial: {fileID: 2100000, guid: 663d4fe33f5cef24093003d8315ee36f, type: 2}
   backgroundGroup: 0
   backgroundMaterial: {fileID: 0}

@@ -18,6 +18,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip perfectClip;
     public AudioClip failClip;
     public AudioClip uiClickClip;
+    public AudioClip uiErrorClip;
+    public AudioClip uiPurchaseClip;
     public AudioClip musicClip;
 
     private AudioSource sfxSource;
@@ -69,6 +71,18 @@ public class AudioManager : MonoBehaviour
     public void PlayUISound()
     {
         uiSource.PlayOneShot(uiClickClip);
+    }
+
+    public void PlayUIErrorSound()
+    {
+        if (uiErrorClip != null)
+            uiSource.PlayOneShot(uiErrorClip);
+    }
+
+    public void PlayUIPurchaseSound()
+    {
+        if (uiPurchaseClip != null)
+            uiSource.PlayOneShot(uiPurchaseClip);
     }
 
     public void PlayMusic(float fadeInTime = 1f)
