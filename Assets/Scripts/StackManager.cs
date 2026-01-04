@@ -25,6 +25,9 @@ public class StackManager : MonoBehaviour
     public PowerupsManager powerupsManager;
     public MissionsManager missionsManager;
 
+    [Header("Extra Life")]
+    public ShopItem extraLifeShopItem;
+
     public static event System.Action OnGameReset;
 
     private GameObject lastBlock;
@@ -58,13 +61,11 @@ public class StackManager : MonoBehaviour
     private float lightness = 0.55f;
 
     // Power-ups
-    private bool hasExtraLife = false;
     private bool hasCoinDoubler = false;
     private bool hasSlowTime = false;
     private bool hasPerfectMagnet = false;
     private bool hasHigherStart = false;
 
-    private int extraLivesRemaining = 0;
     private float slowTimeFactor = 0.5f; // start at 50% speed
     private float slowTimeRecoveryScore = 20; // after 20 points, back to full speed
     private int higherStartScore = 15;
@@ -92,6 +93,10 @@ public class StackManager : MonoBehaviour
         originalPerfectThreshold = perfectStackThreshold;
 
         StartCoroutine(EnableInputNextFrame());
+
+        // Hook up the extra life button
+        if (uiManager.extraLifeButton != null)
+            uiManager.extraLifeButton.onClick.AddListener(OnExtraLifeButtonClicked);
     }
 
     private IEnumerator EnableInputNextFrame()
@@ -110,15 +115,14 @@ public class StackManager : MonoBehaviour
             gameStarted = true;
             score = 0;
 
-            // Apply selected powerups
+            // Apply selected powerups (excluding extra life - that's used at game over)
             var selected = powerupsManager.GetSelectedPowerUps();
             foreach (var item in selected)
             {
                 switch (item.ID)
                 {
                     case "EXTRA_LIFE_00":
-                        hasExtraLife = true;
-                        extraLivesRemaining = item.OwnedCount > 0 ? 1 : 0;
+                        // Extra life is now used at game over, not at start
                         break;
 
                     case "EXTRA_HIGHSTART_02":
@@ -237,51 +241,6 @@ public class StackManager : MonoBehaviour
         // Didn't land anywhere, game over
         if (overlap <= 0f)
         {
-            if (hasExtraLife && extraLivesRemaining > 0)
-            {
-                extraLivesRemaining--;
-                hasExtraLife = false; // consume one life
-                gameOver = false;
-
-                // Reset block to "safe" position & scale
-                Vector3 safePos = new Vector3(0f, lastBlock.transform.position.y - 1, 0f);
-                Vector3 safeScale = new Vector3(5f, 1f, 5f);
-
-                Sequence seq = DOTween.Sequence();
-                seq.Join(currentBlock.DOMove(safePos, 0.4f).SetEase(Ease.OutCubic));
-                seq.Join(currentBlock.DOScale(safeScale, 0.4f).SetEase(Ease.OutCubic));
-
-                seq.OnComplete(() =>
-                {
-                    // Add to stack properly
-                    stackBlocks.Add(currentBlock.gameObject);
-
-                    // Reset streak since this wasn't a perfect
-                    perfectStreak = 0;
-
-                    // Reward the player with at least 1 coin (double if active)
-                    int coinsToAdd = hasCoinDoubler ? 2 : 1;
-                    CurrencyManager.Instance.AddCoins(coinsToAdd);
-
-                    // Advance score
-                    score++;
-                    uiManager.UpdateScore(score);
-                    uiManager.AnimateScorePopup();
-
-                    // Track score-based missions
-                    UpdateScoreMissions();
-
-                    // Track total blocks placed (cumulative across all games)
-                    UpdateBlocksStackedMissions();
-
-                    // Keep playing normally
-                    blockIsDropping = false;
-                    SpawnNextBlock();
-                });
-
-                return; // skip normal game-over handling
-            }
-
             Rigidbody rbLoss = currentBlock.gameObject.AddComponent<Rigidbody>();
             rbLoss.mass = 0.5f;
             rbLoss.angularVelocity = Random.insideUnitSphere * 5f;
@@ -294,6 +253,10 @@ public class StackManager : MonoBehaviour
 
             uiManager.ShowResetButton();
             uiManager.ShowGameOverText();
+
+            // Show extra life button with current count
+            int extraLivesOwned = extraLifeShopItem != null ? extraLifeShopItem.OwnedCount : 0;
+            uiManager.ShowExtraLifeButton(extraLivesOwned);
 
             Time.timeScale = 0.4f;
 
@@ -371,6 +334,108 @@ public class StackManager : MonoBehaviour
         });
 
         MoveCamera();
+    }
+
+    private void OnExtraLifeButtonClicked()
+    {
+        int extraLivesOwned = extraLifeShopItem != null ? extraLifeShopItem.OwnedCount : 0;
+
+        if (extraLivesOwned <= 0)
+        {
+            // No extra lives - later this will trigger IAP
+            Debug.Log("No extra lives available. IAP will be implemented later.");
+            return;
+        }
+
+        // Consume one extra life
+        extraLifeShopItem.SetOwnedCount(extraLivesOwned - 1);
+        extraLifeShopItem.SaveState();
+
+        audioManager.PlayUISound();
+
+        UseExtraLife();
+    }
+
+    private void UseExtraLife()
+    {
+        uiManager.AnimateFontSoftness(0f, 1f, 0.5f);
+
+        uiManager.FadeToBlack(() =>
+        {
+            // Stop all game over animations
+            DOTween.Kill(cameraFollowTarget);
+            DOTween.Kill(cineCam);
+
+            // Reset timescale
+            Time.timeScale = 1f;
+
+            // Hide game over UI
+            uiManager.HideResetButton();
+            uiManager.HideGameOverText();
+            uiManager.HideNewHighScore();
+            uiManager.HideExtraLifeButton();
+
+            // Destroy the failed block (the one that fell off)
+            if (stackBlocks.Count > 0)
+            {
+                GameObject failedBlock = stackBlocks[stackBlocks.Count - 1];
+
+                // Remove rigidbody if it was added
+                Rigidbody rb = failedBlock.GetComponent<Rigidbody>();
+                if (rb != null)
+                    Destroy(rb);
+
+                Destroy(failedBlock);
+                stackBlocks.RemoveAt(stackBlocks.Count - 1);
+            }
+
+            // Get the previous block (now the top of the stack)
+            GameObject topBlock = stackBlocks[stackBlocks.Count - 1];
+            lastBlock = topBlock;
+
+            // Create a new full-size block on top
+            float blockY = lastBlock.transform.localScale.y;
+            Vector3 newBlockPos = new Vector3(0f, lastBlock.transform.position.y + blockY, 0f);
+            Vector3 fullScale = new Vector3(5f, 1f, 5f);
+
+            GameObject reviveBlock = Instantiate(blockPrefab, newBlockPos, Quaternion.identity);
+            reviveBlock.transform.localScale = fullScale;
+            reviveBlock.name = "ReviveBlock";
+
+            // Set block color
+            hue += 8f;
+            hue = Mathf.Repeat(hue, 360f);
+            Color blockColor = ColorUtils.ColorFromHSL(hue, saturation, lightness);
+            SetBlockColor(reviveBlock, blockColor);
+
+            // Disable the mover for now
+            BlockMover mover = reviveBlock.GetComponent<BlockMover>();
+            if (mover != null)
+                mover.enabled = false;
+
+            stackBlocks.Add(reviveBlock);
+            lastBlock = reviveBlock;
+
+            // Reset camera to proper position
+            float newTargetY = lastBlock.transform.position.y + cameraYOffset;
+            cameraFollowTarget.position = new Vector3(cameraFollowTarget.position.x, newTargetY, cameraFollowTarget.position.z);
+            cineCam.Lens.OrthographicSize = initialOrthoSize;
+
+            // Reset perfect streak since we're reviving
+            perfectStreak = 0;
+            ResetPerfectStreakMissions();
+
+            // Reset game state to continue playing
+            gameOver = false;
+            blockIsDropping = false;
+
+            uiManager.AnimateFontSoftness(1f, 0f, 0.5f);
+
+            uiManager.FadeFromBlack();
+
+            // Spawn the next moving block
+            SpawnNextBlock();
+        });
     }
 
     private void UpdateScoreMissions()
@@ -588,6 +653,7 @@ public class StackManager : MonoBehaviour
             uiManager.HideNewHighScore();
             uiManager.HideResetButton();
             uiManager.HideGameOverText();
+            uiManager.HideExtraLifeButton();
 
             // Immediately kill any ongoing tweens for the camera
             DOTween.Kill(cameraFollowTarget);

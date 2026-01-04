@@ -1,26 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using TMPro;
 
 public class ButtonPressEffect : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
 {
     [Header("Visual Settings")]
     [SerializeField] private Sprite pressedSprite;
-    [SerializeField] private Vector2 textOffset = new Vector2(0, -5f); // 5 pixels down feels good on mobile
+    [SerializeField] private Vector2 offset = new Vector2(0, -5f); // 5 pixels down feels good on mobile
 
-    [Header("References")]
-    [SerializeField] private Image targetImage;
-    [SerializeField] private TextMeshProUGUI targetText;
+    [Header("Elements to Shift")]
+    [SerializeField] private RectTransform[] elementsToShift;
 
+    private Image _targetImage;
     private Sprite _originalSprite;
-    private Vector2 _originalTextPos;
+    private Vector2[] _originalPositions;
     private bool _isPressed;
 
     private void Awake()
     {
-        if (targetImage == null) targetImage = GetComponent<Image>();
-        if (targetText == null) targetText = GetComponentInChildren<TextMeshProUGUI>();
+        _targetImage = GetComponent<Image>();
+        
+        if (elementsToShift != null && elementsToShift.Length > 0)
+        {
+            _originalPositions = new Vector2[elementsToShift.Length];
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -28,25 +31,34 @@ public class ButtonPressEffect : MonoBehaviour, IPointerDownHandler, IPointerUpH
         if (_isPressed) return;
         _isPressed = true;
 
-        // 1. Cache originals
-        if (targetImage != null) _originalSprite = targetImage.sprite;
-        if (targetText != null) _originalTextPos = targetText.rectTransform.anchoredPosition;
+        // Cache and apply sprite
+        if (_targetImage != null)
+        {
+            _originalSprite = _targetImage.sprite;
+            if (pressedSprite != null) _targetImage.sprite = pressedSprite;
+        }
 
-        // 2. Apply pressed look
-        if (targetImage != null && pressedSprite != null) targetImage.sprite = pressedSprite;
-        if (targetText != null) targetText.rectTransform.anchoredPosition += textOffset;
+        // Cache and shift elements
+        if (elementsToShift != null)
+        {
+            for (int i = 0; i < elementsToShift.Length; i++)
+            {
+                if (elementsToShift[i] != null)
+                {
+                    _originalPositions[i] = elementsToShift[i].anchoredPosition;
+                    elementsToShift[i].anchoredPosition += offset;
+                }
+            }
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        // This fires when the finger lifts up
         ResetButton();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        // This fires if the finger slides OFF the button
-        // This gives the player a way to "cancel" the click
         ResetButton();
     }
 
@@ -55,16 +67,39 @@ public class ButtonPressEffect : MonoBehaviour, IPointerDownHandler, IPointerUpH
         if (!_isPressed) return;
         _isPressed = false;
 
-        // Revert Image
-        if (targetImage != null && _originalSprite != null)
+        // Revert sprite
+        if (_targetImage != null && _originalSprite != null)
         {
-            targetImage.sprite = _originalSprite;
+            _targetImage.sprite = _originalSprite;
         }
 
-        // Revert Text
-        if (targetText != null)
+        // Revert element positions
+        if (elementsToShift != null && _originalPositions != null)
         {
-            targetText.rectTransform.anchoredPosition = _originalTextPos;
+            for (int i = 0; i < elementsToShift.Length; i++)
+            {
+                if (elementsToShift[i] != null)
+                {
+                    elementsToShift[i].anchoredPosition = _originalPositions[i];
+                }
+            }
         }
+    }
+
+    [ContextMenu("Populate with First-Level Children")]
+    private void PopulateWithChildren()
+    {
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        if (rectTransform == null) return;
+
+        int childCount = rectTransform.childCount;
+        elementsToShift = new RectTransform[childCount];
+
+        for (int i = 0; i < childCount; i++)
+        {
+            elementsToShift[i] = rectTransform.GetChild(i) as RectTransform;
+        }
+
+        Debug.Log($"Populated {childCount} first-level children to shift on button press.");
     }
 }

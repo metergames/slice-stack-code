@@ -1,6 +1,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameUIManager : MonoBehaviour
 {
@@ -16,6 +17,11 @@ public class GameUIManager : MonoBehaviour
     public CanvasGroup resetButtonGroup;
     public CanvasGroup gameOverTextGroup;
     public CanvasGroup newHighScoreGroup;
+
+    [Header("Extra Life Button")]
+    public CanvasGroup extraLifeButtonGroup;
+    public TextMeshProUGUI extraLifeCountText;
+    public Button extraLifeButton;
 
     [Header("Font Materials")]
     public Material fredokaMaterial;
@@ -210,6 +216,40 @@ public class GameUIManager : MonoBehaviour
         resetButtonGroup.blocksRaycasts = false;
         resetButtonGroup.alpha = 0f;
         //resetButtonGroup.DOFade(0f, 0.3f).SetEase(Ease.InQuad);
+    }
+
+    public void ShowExtraLifeButton(int livesRemaining)
+    {
+        if (extraLifeButtonGroup == null) return;
+
+        extraLifeButtonGroup.alpha = 0f;
+        extraLifeButtonGroup.interactable = false;
+        extraLifeButtonGroup.blocksRaycasts = false;
+        extraLifeButtonGroup.gameObject.SetActive(true);
+
+        UpdateExtraLifeCount(livesRemaining);
+
+        extraLifeButtonGroup.DOFade(1f, 0.5f).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            extraLifeButtonGroup.interactable = true;
+            extraLifeButtonGroup.blocksRaycasts = true;
+        });
+    }
+
+    public void HideExtraLifeButton()
+    {
+        if (extraLifeButtonGroup == null) return;
+
+        extraLifeButtonGroup.interactable = false;
+        extraLifeButtonGroup.blocksRaycasts = false;
+        extraLifeButtonGroup.alpha = 0f;
+        extraLifeButtonGroup.gameObject.SetActive(false);
+    }
+
+    public void UpdateExtraLifeCount(int count)
+    {
+        if (extraLifeCountText != null)
+            extraLifeCountText.text = $"{count.ToString()} Left";
     }
 
     public void ShowGameOverText()
