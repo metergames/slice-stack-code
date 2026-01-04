@@ -547,6 +547,7 @@ GameObject:
   - component: {fileID: 84805967}
   - component: {fileID: 84805966}
   - component: {fileID: 84805965}
+  - component: {fileID: 84805969}
   m_Layer: 5
   m_Name: ResetButton
   m_TagString: Untagged
@@ -686,8 +687,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6462313dac62dfa469640cf94fe4237a, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 00d8af9ec99b9ab42aa74b7bda91dbe7, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -704,6 +705,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 84805963}
   m_CullTransparentMesh: 1
+--- !u!114 &84805969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84805963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31c5ed1287b0a8f439245aa5af8c4485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonPressEffect
+  pressedSprite: {fileID: 21300000, guid: 0fe31cc473d2dae4fa89c5bc9bc495aa, type: 3}
+  textOffset: {x: 0, y: -5}
+  targetImage: {fileID: 84805967}
+  targetText: {fileID: 1126882171}
 --- !u!1 &101683108
 GameObject:
   m_ObjectHideFlags: 0
@@ -5302,7 +5319,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 5}
   m_SizeDelta: {x: -30, y: -30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &688230017
@@ -6193,6 +6210,7 @@ GameObject:
   - component: {fileID: 831457434}
   - component: {fileID: 831457433}
   - component: {fileID: 831457432}
+  - component: {fileID: 831457435}
   m_Layer: 5
   m_Name: BackgroundsTabButton
   m_TagString: Untagged
@@ -6308,8 +6326,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6462313dac62dfa469640cf94fe4237a, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 00d8af9ec99b9ab42aa74b7bda91dbe7, type: 3}
+  m_Type: 1
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -6326,6 +6344,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 831457430}
   m_CullTransparentMesh: 1
+--- !u!114 &831457435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831457430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31c5ed1287b0a8f439245aa5af8c4485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonPressEffect
+  pressedSprite: {fileID: 21300000, guid: 0fe31cc473d2dae4fa89c5bc9bc495aa, type: 3}
+  textOffset: {x: 0, y: -5}
+  targetImage: {fileID: 831457433}
+  targetText: {fileID: 1453781975}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -6585,6 +6619,7 @@ GameObject:
   - component: {fileID: 894421123}
   - component: {fileID: 894421122}
   - component: {fileID: 894421121}
+  - component: {fileID: 894421124}
   m_Layer: 5
   m_Name: ExtrasTabButton
   m_TagString: Untagged
@@ -6700,8 +6735,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6462313dac62dfa469640cf94fe4237a, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 00d8af9ec99b9ab42aa74b7bda91dbe7, type: 3}
+  m_Type: 1
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -6718,6 +6753,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 894421119}
   m_CullTransparentMesh: 1
+--- !u!114 &894421124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894421119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31c5ed1287b0a8f439245aa5af8c4485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonPressEffect
+  pressedSprite: {fileID: 21300000, guid: 0fe31cc473d2dae4fa89c5bc9bc495aa, type: 3}
+  textOffset: {x: 0, y: -5}
+  targetImage: {fileID: 894421122}
+  targetText: {fileID: 2021227736}
 --- !u!1 &905652968
 GameObject:
   m_ObjectHideFlags: 0
@@ -7796,7 +7847,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 5}
   m_SizeDelta: {x: -30, y: -30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1021138636
@@ -7972,6 +8023,7 @@ GameObject:
   - component: {fileID: 1039827934}
   - component: {fileID: 1039827933}
   - component: {fileID: 1039827932}
+  - component: {fileID: 1039827935}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -8075,8 +8127,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6462313dac62dfa469640cf94fe4237a, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 00d8af9ec99b9ab42aa74b7bda91dbe7, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -8093,6 +8145,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1039827930}
   m_CullTransparentMesh: 1
+--- !u!114 &1039827935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039827930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31c5ed1287b0a8f439245aa5af8c4485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonPressEffect
+  pressedSprite: {fileID: 21300000, guid: 0fe31cc473d2dae4fa89c5bc9bc495aa, type: 3}
+  textOffset: {x: 0, y: -5}
+  targetImage: {fileID: 1039827933}
+  targetText: {fileID: 1444582487}
 --- !u!224 &1076632390 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5057059388626022513, guid: 2272d2de7bae9b741bd682174fe969d7, type: 3}
@@ -8814,7 +8882,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 5}
   m_SizeDelta: {x: -30, y: -30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1126882171
@@ -9164,6 +9232,7 @@ GameObject:
   - component: {fileID: 1174611802}
   - component: {fileID: 1174611801}
   - component: {fileID: 1174611800}
+  - component: {fileID: 1174611803}
   m_Layer: 5
   m_Name: MusicTabButton
   m_TagString: Untagged
@@ -9279,8 +9348,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6462313dac62dfa469640cf94fe4237a, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 00d8af9ec99b9ab42aa74b7bda91dbe7, type: 3}
+  m_Type: 1
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -9297,6 +9366,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1174611798}
   m_CullTransparentMesh: 1
+--- !u!114 &1174611803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174611798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31c5ed1287b0a8f439245aa5af8c4485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonPressEffect
+  pressedSprite: {fileID: 21300000, guid: 0fe31cc473d2dae4fa89c5bc9bc495aa, type: 3}
+  textOffset: {x: 0, y: -5}
+  targetImage: {fileID: 1174611801}
+  targetText: {fileID: 688230017}
 --- !u!1 &1190212948
 GameObject:
   m_ObjectHideFlags: 0
@@ -10978,7 +11063,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 5}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1444582487
@@ -11115,7 +11200,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 5}
   m_SizeDelta: {x: -30, y: -30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1453781975
@@ -13772,6 +13857,7 @@ GameObject:
   - component: {fileID: 1809115915}
   - component: {fileID: 1809115914}
   - component: {fileID: 1809115913}
+  - component: {fileID: 1809115916}
   m_Layer: 5
   m_Name: SkinsTabButton
   m_TagString: Untagged
@@ -13887,8 +13973,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6462313dac62dfa469640cf94fe4237a, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 00d8af9ec99b9ab42aa74b7bda91dbe7, type: 3}
+  m_Type: 1
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -13905,6 +13991,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1809115911}
   m_CullTransparentMesh: 1
+--- !u!114 &1809115916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809115911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31c5ed1287b0a8f439245aa5af8c4485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonPressEffect
+  pressedSprite: {fileID: 21300000, guid: 0fe31cc473d2dae4fa89c5bc9bc495aa, type: 3}
+  textOffset: {x: 0, y: -5}
+  targetImage: {fileID: 1809115914}
+  targetText: {fileID: 1021138636}
 --- !u!1 &1815628643
 GameObject:
   m_ObjectHideFlags: 0
@@ -15397,7 +15499,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 5}
   m_SizeDelta: {x: -30, y: -30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2021227736
