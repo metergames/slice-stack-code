@@ -82,7 +82,8 @@ def decode_serial(serial: str, label: str = "") -> list[tuple[int, int, str]]:
 # Note serial numbers (as read from the banknote image)
 # ---------------------------------------------------------------------------
 
-LEFT_SERIAL   = "14528824"    # digit portion of "PR1S4528824"
+LEFT_SERIAL   = "14528824"    # digit characters extracted from "PR1S4528824"
+                              # (letters P, R, S are special-character markers)
 RIGHT_SERIAL  = "42800176301"
 BOTTOM_SERIAL = "106852838"
 
@@ -130,7 +131,8 @@ def solve():
             if span & seen_positions[serial]:
                 continue
             seen_positions[serial] |= span
-            print(f"    pos [{pos}:{pos+len(str(key))}] "
+            key_len = len(str(key))
+            print(f"    pos [{pos}:{pos+key_len}] "
                   f"key = {key:3d}  →  n_i = {key//5:2d}  →  '{char}'")
             found_chars.append((label, pos, key, char))
 
